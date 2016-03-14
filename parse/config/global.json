@@ -1,0 +1,14 @@
+{
+  "global": {
+    "parseVersion": "1.4.2"
+  },
+  "applications": {
+    "CMV": {
+      "applicationId": "yO3MBzW9liNCaiAfXWGb3NtZJ3VhXyy4Zh8rR5ck",
+      "masterKey": "gVNcEkDaLaMJSuAKnQVZu6UFaQ0zRwQ3TpdZYSE4"
+    },
+    "_default": {
+      "link": "CMV"
+    }
+  }
+}
