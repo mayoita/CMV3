@@ -2399,7 +2399,6 @@
 				22CF4455181A9AD70062FC38 /* Sources */,
 				22CF4456181A9AD70062FC38 /* Frameworks */,
 				22CF4457181A9AD70062FC38 /* Resources */,
-				226032D11B30C4620003E72B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -2669,22 +2668,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		226032D11B30C4620003E72B /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script will upload symbol files for your application,\n# so all your crash reports are going to be symbolicated\n\n# Important!\n# Before using the script, please initialize CloudCode folder and replace <path_to_cloudcode_folder> with the path to it\n#\n# Read more on Parse.com - https://parse.com/apps/quickstart#analytics/crashreporting/ios/\n############################################################\n\n\n export PATH=/usr/local/bin:$PATH\n cd /Users/massimomoro/CMV1.5/parse\n\n parse symbols -p \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\"";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		22CF4455181A9AD70062FC38 /* Sources */ = {
