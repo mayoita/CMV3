@@ -10,6 +10,9 @@
 #import <Parse/Parse.h>
 #import "CMVAppDelegate.h"
 #import "CMVCloseButton.h"
+#import "Menu.h"
+#import <AWSS3/AWSS3.h>
+#import "AWSConfiguration.h"
 
 @interface CMVMenuRestaurantViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -52,56 +55,101 @@ static NSString *RPSlidingCellIdentifier = @"RPSlidingCellIdentifier";
     
     [self.collectionView registerClass:[RPSlidingMenuCell class] forCellWithReuseIdentifier:RPSlidingCellIdentifier];
     self.collectionView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"paper_texture_05"]];
-    PFQuery *query = [PFQuery queryWithClassName:@"Menu"];
-    [query setCachePolicy:kPFCachePolicyNetworkOnly];
-    if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-        [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-    }
+ 
     if (self.office == 0) {
-        self.rowId = @"25WSnGlEDW";
+        self.rowId = @"1";
     } else {
-        self.rowId = @"k5xjqXyLe7";
+        self.rowId = @"2";
     }
-    [query getObjectInBackgroundWithId:self.rowId block:^(PFObject *menu, NSError *error) {
-        if (!error) {
-        
-        if (![menu[@"Chief"] isEqualToString:@""]) {
-            self.chiefName.hidden=NO;
-            self.chiefName.text=[@"CHEF " stringByAppendingString:menu[@"Chief"]];
-        }
-        
-        if (menu[@"StartDate"]) {
-            self.fromTo.hidden=NO;
-            NSString *from= NSLocalizedString(@"FROM ", @"Menu context (add one space)");
-            NSString *to= NSLocalizedString(@" TO ", @"Menu context(add one space before and one after");
-            
-            NSDateFormatter *dateStartFormat = [[NSDateFormatter alloc] init];
-            [dateStartFormat setDateFormat:@"d"];
-            NSString *dateString = [dateStartFormat stringFromDate:menu[@"StartDate"]];
-            
-            NSDateFormatter *dateEndFormat = [[NSDateFormatter alloc] init];
-            [dateEndFormat setDateFormat:@"dd MMM yyyy"];
-            NSString *dateEndString = [dateEndFormat stringFromDate:menu[@"EndDate"]].uppercaseString;
-            
-            NSString *toEnd=[to stringByAppendingString:dateEndString];
-            NSString *fromStart=[from stringByAppendingString:dateString];
-            
-            NSString *fromto=[fromStart stringByAppendingString:toEnd];
-            self.fromTo.text=fromto;
-        }
-        
-        PFFile *imageFile=menu[@"ImageChief"];
-        if (([imageFile isKindOfClass:[NSNull class]]) || (imageFile == nil)) {
-            
-            
-        } else {
-            [imageFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-                self.chiefImage.image=[UIImage imageWithData:data];
-            }    ];
-        }
-        }
-        
-    }];
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    [[dynamoDBObjectMapper load:[Menu class] hashKey:self.rowId rangeKey:nil]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         }
+         if (task.exception) {
+             NSLog(@"The request failed. Exception: [%@]", task.exception);
+         }
+         if (task.result) {
+             Menu *menu = task.result;
+             if (![menu.Chief isEqualToString:@"NULL"]) {
+                 self.chiefName.hidden=NO;
+                 self.chiefName.text=[@"CHEF " stringByAppendingString:menu.Chief];
+             }
+             
+             if (menu.StartDate) {
+                 self.fromTo.hidden=NO;
+                 NSString *from= NSLocalizedString(@"FROM ", @"Menu context (add one space)");
+                 NSString *to= NSLocalizedString(@" TO ", @"Menu context(add one space before and one after");
+                 
+                 NSDateFormatter *dateStartFormat = [[NSDateFormatter alloc] init];
+                 [dateStartFormat setDateFormat:@"d"];
+                 NSString *dateString = [dateStartFormat stringFromDate:menu.StartDate];
+                 
+                 NSDateFormatter *dateEndFormat = [[NSDateFormatter alloc] init];
+                 [dateEndFormat setDateFormat:@"dd MMM yyyy"];
+                 NSString *dateEndString = [dateEndFormat stringFromDate:menu.EndDate].uppercaseString;
+                 
+                 NSString *toEnd=[to stringByAppendingString:dateEndString];
+                 NSString *fromStart=[from stringByAppendingString:dateString];
+                 
+                 NSString *fromto=[fromStart stringByAppendingString:toEnd];
+                 self.fromTo.text=fromto;
+             }
+             
+             if ([menu.ImageChief isEqualToString:@"NULL"]) {
+                 
+                 //aa
+             } else {
+                 AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+                 AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+                 
+                 NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:menu.ImageChief ];
+                 NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+                 downloadRequest.bucket = S3BucketName;
+                 downloadRequest.key = menu.ImageChief ;
+                 
+                 downloadRequest.downloadingFileURL = downloadingFileURL;
+                 if ([UIImage imageWithContentsOfFile:downloadingFilePath] == nil) {
+                     // Download the file.
+                     [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                            withBlock:^id(AWSTask *task) {
+                                                                                if (task.error){
+                                                                                    if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                        switch (task.error.code) {
+                                                                                            case AWSS3TransferManagerErrorCancelled:
+                                                                                            case AWSS3TransferManagerErrorPaused:
+                                                                                                break;
+                                                                                                
+                                                                                            default:
+                                                                                                NSLog(@"Error: %@", task.error);
+                                                                                                break;
+                                                                                        }
+                                                                                    } else {
+                                                                                        // Unknown error.
+                                                                                        NSLog(@"Error: %@", task.error);
+                                                                                    }
+                                                                                }
+                                                                                
+                                                                                if (task.result) {
+                                                                                    
+                                                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                       self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                                    });
+                                                                                    
+                                                                                }
+                                                                                return nil;
+                                                                            }];
+                 } else {
+                     self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
+                 }
+                 
+             }
+         }
+         return nil;
+     }];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -133,48 +181,56 @@ static NSString *RPSlidingCellIdentifier = @"RPSlidingCellIdentifier";
 
 - (void)customizeCell:(RPSlidingMenuCell *)slidingMenuCell forRow:(NSInteger)row{
     // alternate for demo.  Simply set the properties of the passed in cell
-    PFQuery *query = [PFQuery queryWithClassName:@"Menu"];
-    [query setCachePolicy:kPFCachePolicyNetworkOnly];
-    if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-        [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-    }
-    [query getObjectInBackgroundWithId:self.rowId block:^(PFObject *menu, NSError *error) {
-        
-        switch (row) {
-            case 0: {
-                slidingMenuCell.dataMenu=menu[@"Starters"];
-                slidingMenuCell.textLabel.text = @"Starters";
-                slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
-                
-            }
-                break;
-            case 1: {
-                slidingMenuCell.dataMenu=menu[@"FirstCourse"];
-                slidingMenuCell.textLabel.text = @"First Course";
-                slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
-                
-            }
-                break;
-            case 2: {
-                slidingMenuCell.dataMenu=menu[@"SecondCourse"];
-                slidingMenuCell.textLabel.text = @"Second Course";
-               
-                slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
-            }
-                break;
-            case 3: {
-                slidingMenuCell.dataMenu=menu[@"Dessert"];
-                slidingMenuCell.textLabel.text = @"Dessert";
-             
-                slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
-            }
-                break;
-                
-            default:
-                break;
-        }
-        [slidingMenuCell.menuTableView reloadData];
-    }];
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    [[dynamoDBObjectMapper load:[Menu class] hashKey:self.rowId rangeKey:nil]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         }
+         if (task.exception) {
+             NSLog(@"The request failed. Exception: [%@]", task.exception);
+         }
+         if (task.result) {
+             Menu *menu = task.result;
+             switch (row) {
+                 case 0: {
+                     slidingMenuCell.dataMenu=menu.Starters;
+                     slidingMenuCell.textLabel.text = @"Starters";
+                     slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
+                     
+                 }
+                     break;
+                 case 1: {
+                     slidingMenuCell.dataMenu=menu.FirstCourse;
+                     slidingMenuCell.textLabel.text = @"First Course";
+                     slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
+                     
+                 }
+                     break;
+                 case 2: {
+                     slidingMenuCell.dataMenu=menu.SecondCourse;
+                     slidingMenuCell.textLabel.text = @"Second Course";
+                     
+                     slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
+                 }
+                     break;
+                 case 3: {
+                     slidingMenuCell.dataMenu=menu.Dessert;
+                     slidingMenuCell.textLabel.text = @"Dessert";
+                     
+                     slidingMenuCell.backgroundImageView.image = [UIImage imageNamed:@"paper_texture_05"];
+                 }
+                     break;
+                     
+                 default:
+                     break;
+             }
+             [slidingMenuCell.menuTableView reloadData];
+         }
+         return nil;
+     }];
+
     
 }
 

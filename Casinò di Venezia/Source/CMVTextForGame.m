@@ -8,7 +8,9 @@
 
 #import "CMVTextForGame.h"
 #import "CMVLocalize.h"
-#import <Parse/Parse.h>
+
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import "Jackpot.h"
 
 
 
@@ -1200,43 +1202,54 @@
 
 -(void)updateOurJackpots {
     
-    PFQuery *query = [PFQuery queryWithClassName:@"Jackpot"];
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
     
-    [query getObjectInBackgroundWithId:@"pclLmCGRbH" block:^(PFObject *gameScore, NSError *error) {
-
-        switch ([CMVLocalize myDeviceLocaleIs]) {
-            case IT :
-                self.textForJackpot=gameScore[@"ourJackpotIT"];
-                break;
-            case DE :
-                self.textForJackpot=gameScore[@"ourJackpotDE"];
-                break;
-            case FR :
-                self.textForJackpot=gameScore[@"ourJackpotFR"];
-                break;
-            case ES :
-                self.textForJackpot=gameScore[@"ourJackpotES"];
-                break;
-            case RU  :
-               self.textForJackpot=gameScore[@"ourJackpotRU"];
-                break;
-            case ZH:
-                self.textForJackpot=gameScore[@"ourJackpotZH"];
-                break;
-                
-            default:
-                self.textForJackpot=gameScore[@"ourJackpots"];
-                break;
-        }
-        
-        NSDictionary *firstAttributes = [self firstAttributes];
-        NSInteger _stringLength=[self.textForJackpot length];
-        NSMutableAttributedString *attMyString=[[NSMutableAttributedString alloc] initWithString:self.textForJackpot];
-        [attMyString setAttributes:firstAttributes range:NSMakeRange(0, _stringLength)];
-        self.descriptionView.attributedText=attMyString;
-        self.textToBeRead=[attMyString string];
-        
-    }];
+    [[dynamoDBObjectMapper load:[Jackpot class] hashKey:@"2" rangeKey:nil]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         }
+         if (task.exception) {
+             NSLog(@"The request failed. Exception: [%@]", task.exception);
+         }
+         if (task.result) {
+             
+             Jackpot *item = task.result;
+             switch ([CMVLocalize myDeviceLocaleIs]) {
+                 case IT :
+                     self.textForJackpot=item.ourJackpotIT;
+                     break;
+                 case DE :
+                     self.textForJackpot=item.ourJackpotDE;
+                     break;
+                 case FR :
+                     self.textForJackpot=item.ourJackpotFR;
+                     break;
+                 case ES :
+                     self.textForJackpot=item.ourJackpotES;
+                     break;
+                 case RU  :
+                     self.textForJackpot=item.ourJackpotRU;
+                     break;
+                 case ZH:
+                     self.textForJackpot=item.ourJackpotZH;
+                     break;
+                     
+                 default:
+                     self.textForJackpot=item.ourJackpot;
+                     break;
+             }
+             
+             NSDictionary *firstAttributes = [self firstAttributes];
+             NSInteger _stringLength=[self.textForJackpot length];
+             NSMutableAttributedString *attMyString=[[NSMutableAttributedString alloc] initWithString:self.textForJackpot];
+             [attMyString setAttributes:firstAttributes range:NSMakeRange(0, _stringLength)];
+             self.descriptionView.attributedText=attMyString;
+             self.textToBeRead=[attMyString string];
+         }
+         return nil;
+     }];
+    
 }
 
 

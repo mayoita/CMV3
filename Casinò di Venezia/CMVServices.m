@@ -16,6 +16,10 @@
 #import "CMVCheckWeekDay.h"
 #import "CMVConstants.h"
 #import "CMVCloseButton.h"
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import "Festivity.h"
+#import "Services.h"
+#import "ServicesVSP.h"
 
 
 #import "CMVCellServicesTableViewCell.h"
@@ -28,7 +32,7 @@
 @property (strong, nonatomic)UIRefreshControl *refreshControl;
 @property(strong,nonatomic)NSString *leftColumn;
 @property(strong,nonatomic)NSString *rightClomun;
-@property(strong,nonatomic)PFQuery *query;
+
 @property (weak, nonatomic) IBOutlet CMVCloseButton *closeButton;
 
 
@@ -36,6 +40,7 @@
 
 @implementation CMVServices
 BOOL VSP = 0;
+Festivity *storageFestivity;
 
 
 @synthesize times=_times;
@@ -130,63 +135,108 @@ BOOL VSP = 0;
 }
 
 -(void)loadFestivity {
-    PFQuery *queryFestivity = [PFQuery queryWithClassName:@"Festivity"];
-    [queryFestivity setCachePolicy:kPFCachePolicyNetworkOnly];
-    if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-        [queryFestivity setCachePolicy:kPFCachePolicyCacheThenNetwork];
-    }
-    [queryFestivity getObjectInBackgroundWithId:@"7VTo3n7rum" block:^(PFObject *festivityarray, NSError *error) {
-        
-        for (id object in festivityarray[@"festivity"]) {
-            
-            if ([[CMVCheckWeekDay checkWeekDAy][@"day"] intValue] == [object[0] intValue] && [[CMVCheckWeekDay checkWeekDAy][@"month"] intValue] == [object[1] intValue]) {
-                VSP=1;
-            }
-        }
-        
-        _times=nil;
-        [self.tableView reloadData];
-    }];
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+    
+    [[dynamoDBObjectMapper load:[Festivity class] hashKey:@"1" rangeKey:nil]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         }
+         if (task.exception) {
+             NSLog(@"The request failed. Exception: [%@]", task.exception);
+         }
+         if (task.result) {
+             
+             Festivity *item = task.result;
+             storageFestivity = item.festivity;
+             for (id object in storageFestivity) {
+                 
+                 if ([[CMVCheckWeekDay checkWeekDAy][@"day"] intValue] == [object[0] intValue] && [[CMVCheckWeekDay checkWeekDAy][@"month"] intValue] == [object[1] intValue]) {
+                     VSP=1;
+                 }
+             }
+             
+             _times=nil;
+             [self.tableView reloadData];
+         }
+         return nil;
+     }];
+
 }
 
 
 -(NSMutableArray *)times {
    
     if (!_times) {
-        self.query=nil;
-        if (!self.query) {
-            if (([[CMVCheckWeekDay checkWeekDAy][@"weekday"] intValue] == 7 || [[CMVCheckWeekDay checkWeekDAy][@"weekday"] intValue] == 6) || VSP) {
-                self.query = [PFQuery queryWithClassName:@"ServicesVSP"];
-            } else {
-                self.query = [PFQuery queryWithClassName:@"Services"];
-            }
-        }
-      
-        [self.query setCachePolicy:kPFCachePolicyNetworkOnly];
-        if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-            [self.query setCachePolicy:kPFCachePolicyCacheThenNetwork];
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        //DynamoScan
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+        scanExpression.limit = @30;
+        scanExpression.filterExpression = @"MEVE = :val";
+        scanExpression.expressionAttributeValues = @{@":val":self.fromTo};
+        if (([[CMVCheckWeekDay checkWeekDAy][@"weekday"] intValue] == 7 || [[CMVCheckWeekDay checkWeekDAy][@"weekday"] intValue] == 6) || VSP) {
+            [[dynamoDBObjectMapper scan:[ServicesVSP class]
+                             expression:scanExpression]
+             continueWithBlock:^id(AWSTask *task) {
+                 if (task.error) {
+                     NSLog(@"The request failed. Error: [%@]", task.error);
+                 }
+                 if (task.exception) {
+                     NSLog(@"The request failed. Exception: [%@]", task.exception);
+                 }
+                 if (task.result) {
+                     AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                     _times = [NSMutableArray array];
+                     for (ServicesVSP *event in paginatedOutput.items) {
+                         [_times addObject:event];
+                     }
+                     NSSortDescriptor *sortDescriptor;
+                     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Order"
+                                                                  ascending:YES];
+                     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+                     NSArray *sortedArray = [_times sortedArrayUsingDescriptors:sortDescriptors];
+                     _times = sortedArray;
+                     [self.tableView reloadData];
+                 }
+                 return nil;
+             }];
+        } else {
+            [[dynamoDBObjectMapper scan:[Services class]
+                             expression:scanExpression]
+             continueWithBlock:^id(AWSTask *task) {
+                 if (task.error) {
+                     NSLog(@"The request failed. Error: [%@]", task.error);
+                 }
+                 if (task.exception) {
+                     NSLog(@"The request failed. Exception: [%@]", task.exception);
+                 }
+                 if (task.result) {
+                     AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                     _times = [NSMutableArray array];
+                     for (Services *event in paginatedOutput.items) {
+                         [_times addObject:event];
+                     }
+                     NSSortDescriptor *sortDescriptor;
+                     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Order"
+                                                                  ascending:YES];
+                     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+                     NSArray *sortedArray = [_times sortedArrayUsingDescriptors:sortDescriptors];
+                     _times = sortedArray;
+                     [self.tableView reloadData];
+                 }
+                 return nil;
+             }];
         }
         
-        [self.query whereKey:@"MEVE" equalTo:self.fromTo];
-        [self.query orderByAscending:@"Order"];
-
-        [self.query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                    _times = [NSMutableArray array];
-                    [_times addObjectsFromArray:objects];
-                    
-                    [self.tableView reloadData];
-                
-            } else {
-                
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-        }];
     }
     return _times;
 }
 
 -(int)stringtoSeconds:(NSString *)stringToConvert {
+    if ([stringToConvert isEqualToString:@" "]) {
+        return 0;
+    } else {
     NSTimeInterval seconds;
     int hoursBus = [[stringToConvert substringToIndex:2] intValue];
     int minutesBus = [[stringToConvert substringFromIndex:3] intValue];
@@ -194,6 +244,7 @@ BOOL VSP = 0;
     seconds = hoursBus * 3600 + minutesBus*60;
  
     return seconds;
+    }
 }
 
 -(NSDate *)dateWithOutTime:(NSDate *)datDate {
@@ -311,17 +362,17 @@ BOOL VSP = 0;
         cell.rightLabel.font=GOTHAM_BOOK(12);
     } else {
     
-    PFObject *object=self.times[indexPath.row];
-    PFObject *beforeObject;
+    Services *object=self.times[indexPath.row];
+    Services *beforeObject;
     if ((indexPath.row - 1) != -1) {
         beforeObject=self.times[indexPath.row - 1];
     }
    
-    [self isNextBus:object[@"LeftColumn"] nextHour:beforeObject[@"LeftColumn"]  inCell:cell.leftImage withCell:cell.leftLabel];
-    [self isNextBus:object[@"RightColumn"] nextHour:beforeObject[@"RightColumn"] inCell:cell.rightImage withCell:cell.rightLabel];
+    [self isNextBus:object.LeftColumn nextHour:beforeObject.LeftColumn  inCell:cell.leftImage withCell:cell.leftLabel];
+    [self isNextBus:object.RightColumn nextHour:beforeObject.RightColumn inCell:cell.rightImage withCell:cell.rightLabel];
     
-    cell.leftLabel.text=object[@"LeftColumn"];
-    cell.rightLabel.text=object[@"RightColumn"] ;
+    cell.leftLabel.text=object.LeftColumn;
+    cell.rightLabel.text=object.RightColumn;
     }
 
     

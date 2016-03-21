@@ -400,6 +400,12 @@
 		22FA36B0184612A900D8A8C8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FA36AF184612A900D8A8C8 /* MapKit.framework */; };
 		22FA36B2184612C500D8A8C8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22FA36B1184612C500D8A8C8 /* CoreLocation.framework */; };
 		22FA36B41846247E00D8A8C8 /* Mestre.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 22FA36B31846247E00D8A8C8 /* Mestre.gpx */; };
+		22FBACF51C98201200C63586 /* Radius.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBACF41C98201200C63586 /* Radius.m */; };
+		22FBACF81C9825C500C63586 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBACF71C9825C500C63586 /* Menu.m */; };
+		22FBACFB1C98464A00C63586 /* Services.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBACFA1C98464A00C63586 /* Services.m */; };
+		22FBACFE1C98465C00C63586 /* ServicesVSP.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBACFD1C98465C00C63586 /* ServicesVSP.m */; };
+		22FBAD011C98563C00C63586 /* VPCPrize.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBAD001C98563C00C63586 /* VPCPrize.m */; };
+		22FBAD041C98565400C63586 /* VPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBAD031C98565400C63586 /* VPC.m */; };
 		233846F38AB7BCEB4A341695 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29304C30B2E11CE3F312872A /* QuickLook.framework */; };
 		6AF44DADA09C92967E09E188 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29304C30B2E11CE3F312872A /* QuickLook.framework */; };
 		CD3228D8185BBE3200610B17 /* fairroulette_458X972.png in Resources */ = {isa = PBXBuildFile; fileRef = CD3228D7185BBE3200610B17 /* fairroulette_458X972.png */; };
@@ -1187,6 +1193,18 @@
 		22FA36AF184612A900D8A8C8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		22FA36B1184612C500D8A8C8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		22FA36B31846247E00D8A8C8 /* Mestre.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Mestre.gpx; path = "Casinò di Venezia/Mestre.gpx"; sourceTree = "<group>"; };
+		22FBACF31C98201200C63586 /* Radius.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Radius.h; sourceTree = "<group>"; };
+		22FBACF41C98201200C63586 /* Radius.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Radius.m; sourceTree = "<group>"; };
+		22FBACF61C9825C500C63586 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
+		22FBACF71C9825C500C63586 /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
+		22FBACF91C98464A00C63586 /* Services.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Services.h; sourceTree = "<group>"; };
+		22FBACFA1C98464A00C63586 /* Services.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Services.m; sourceTree = "<group>"; };
+		22FBACFC1C98465C00C63586 /* ServicesVSP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServicesVSP.h; sourceTree = "<group>"; };
+		22FBACFD1C98465C00C63586 /* ServicesVSP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServicesVSP.m; sourceTree = "<group>"; };
+		22FBACFF1C98563C00C63586 /* VPCPrize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPCPrize.h; sourceTree = "<group>"; };
+		22FBAD001C98563C00C63586 /* VPCPrize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPCPrize.m; sourceTree = "<group>"; };
+		22FBAD021C98565400C63586 /* VPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPC.h; sourceTree = "<group>"; };
+		22FBAD031C98565400C63586 /* VPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPC.m; sourceTree = "<group>"; };
 		29304C30B2E11CE3F312872A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		CD3228D7185BBE3200610B17 /* fairroulette_458X972.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fairroulette_458X972.png; sourceTree = "<group>"; };
 		CD429E2618C3A1AB0015ED37 /* CRMotionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMotionView.h; sourceTree = "<group>"; };
@@ -1754,6 +1772,18 @@
 		22A3498D1844BE2300D2B543 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				22FBAD021C98565400C63586 /* VPC.h */,
+				22FBAD031C98565400C63586 /* VPC.m */,
+				22FBACFF1C98563C00C63586 /* VPCPrize.h */,
+				22FBAD001C98563C00C63586 /* VPCPrize.m */,
+				22FBACFC1C98465C00C63586 /* ServicesVSP.h */,
+				22FBACFD1C98465C00C63586 /* ServicesVSP.m */,
+				22FBACF91C98464A00C63586 /* Services.h */,
+				22FBACFA1C98464A00C63586 /* Services.m */,
+				22FBACF61C9825C500C63586 /* Menu.h */,
+				22FBACF71C9825C500C63586 /* Menu.m */,
+				22FBACF31C98201200C63586 /* Radius.h */,
+				22FBACF41C98201200C63586 /* Radius.m */,
 				22B0C74F1C93311A00E7A3F5 /* CMVSharedClass.h */,
 				22B0C7501C93311A00E7A3F5 /* CMVSharedClass.m */,
 				22B0C74C1C932E8A00E7A3F5 /* News.h */,
@@ -2714,6 +2744,7 @@
 				22F6FCF119D1A161003AB1D1 /* CMVTabBarControllerNew.m in Sources */,
 				22B0C7511C93311A00E7A3F5 /* CMVSharedClass.m in Sources */,
 				2297E5B318CDDB4200072806 /* CMVMail.m in Sources */,
+				22FBACF81C9825C500C63586 /* Menu.m in Sources */,
 				223FEB0C18D9B1A50053EC1B /* UIImage+FX.m in Sources */,
 				2297E5D218D074C700072806 /* MZModalViewController.m in Sources */,
 				22D88AA219E7D6170035D1CD /* CMVBarCode.m in Sources */,
@@ -2750,7 +2781,9 @@
 				22D3AF3F18AA3F3F0023BAE2 /* CMVSplitTournaments.m in Sources */,
 				22D00DF518EBFC6C0047DD31 /* FBShimmeringView.m in Sources */,
 				22D9DBE119DC31DC005AB952 /* CMVPokerCellBackgroundGrey.m in Sources */,
+				22FBACFB1C98464A00C63586 /* Services.m in Sources */,
 				22BADAA6188555F8000318E3 /* CMVTournamentsCell.m in Sources */,
+				22FBAD041C98565400C63586 /* VPC.m in Sources */,
 				22C21522186090A600E2A671 /* CMVTable.m in Sources */,
 				22097798192CCB36004026BD /* CMVAlertForVPC.m in Sources */,
 				22A8AE4119CC81B90070A65C /* METransitions.m in Sources */,
@@ -2773,6 +2806,7 @@
 				22AAC67F1987E7200035BBB4 /* CMVBackButton.m in Sources */,
 				22BB3D46186863EA002917B1 /* CMVBarButton.m in Sources */,
 				22C09453183FBDA0008F4E77 /* ZBMSlideViewController.m in Sources */,
+				22FBACFE1C98465C00C63586 /* ServicesVSP.m in Sources */,
 				22BDF16618D86B38007BC6D0 /* CMVLocalize.m in Sources */,
 				221FAF7718C76F0100B77952 /* CMVVoiceOpen.m in Sources */,
 				22BADACA18859882000318E3 /* CMVPokerHourSlitViewController.m in Sources */,
@@ -2816,6 +2850,7 @@
 				2246E9C51A24D8280083D12E /* TTBlackTriangle.m in Sources */,
 				22C3DE1E184F45DB00464BCF /* CMVGameSplitViewController.m in Sources */,
 				2203C51519D5985C003739B4 /* MZFormSheetBackgroundWindowViewController.m in Sources */,
+				22FBACF51C98201200C63586 /* Radius.m in Sources */,
 				22B91BFA19D98BC0000BC704 /* CMVTournamentCellNew.m in Sources */,
 				223FEB0B18D9B1A50053EC1B /* FXImageView.m in Sources */,
 				2245BA9D19F12B23008BB317 /* CMVSubscription.m in Sources */,
@@ -2862,6 +2897,7 @@
 				22BADACD18859B39000318E3 /* CMVAllPokerTournaments.m in Sources */,
 				2277E5A51934906800CD9EAF /* CMVMailChimp.m in Sources */,
 				2230D813181E69C60060C568 /* CMVSwipeTableViewCell.m in Sources */,
+				22FBAD011C98563C00C63586 /* VPCPrize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

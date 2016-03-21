@@ -33,6 +33,7 @@
 #import "Events.h"
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import <AWSS3/AWSS3.h>
+#import "Radius.h"
 
 //TODO: Set 120 for publishing
 //TODO: Voice speed for iOS 8
@@ -335,16 +336,24 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
 -(float)radius {
     if (!_radius) {
         _radius=200;
-        PFQuery *query = [PFQuery queryWithClassName:@"Radius"];
-        [query setCachePolicy:kPFCachePolicyNetworkOnly];
-        if (!self.isParseReachable) {
-            [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-        }
-       
-        [query getObjectInBackgroundWithId:@"ctwCyETQAM" block:^(PFObject *object, NSError *error) {
-            _radius=[object[@"radius"] floatValue];
-           
-        }];
+        
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        [[dynamoDBObjectMapper load:[Radius class] hashKey:@"1" rangeKey:nil]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             }
+             if (task.exception) {
+                 NSLog(@"The request failed. Exception: [%@]", task.exception);
+             }
+             if (task.result) {
+                 Radius *class = task.result;
+                 _radius = class.radius;
+             }
+             return nil;
+         }];
+        
     }
     
     return _radius;

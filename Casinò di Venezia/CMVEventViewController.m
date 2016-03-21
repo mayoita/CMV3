@@ -123,7 +123,7 @@
     } else {
         [photo addObject:defaultImage];
     }
-    if (![imageFile1 isEqualToString:@"NULL"]) {
+    if (![imageFile2 isEqualToString:@"NULL"]) {
         [photo addObject:imageFile2];
     }
     if (![imageFile3 isEqualToString:@"NULL"]) {

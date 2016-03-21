@@ -52,41 +52,6 @@
          return nil;
      }];
     
-//    PFQuery *query = [PFQuery queryWithClassName:className];
-//    // If no objects are loaded in memory, we look to the cache first to fill the table
-//    // and then subsequently do a query against the network. https://parse.com/docs/ios_guide#queries-caching/iOS
-//    //BOOL isInCache = [query hasCachedResult];
-//    //query.cachePolicy = kPFCachePolicyCacheElseNetwork;
-//    [query setCachePolicy:kPFCachePolicyNetworkOnly];
-//    if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-//        [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-//    }
-//    
-//    NSArray *eventStrings = [CMVSharedClass eventTypeStrings];
-//    NSString *eventType = eventStrings[eventChar];
-//   
-//    
-//    [query whereKey:@"eventType" containsString:eventType];
-//    [query whereKey:@"isSlotsEvents" equalTo:[NSNumber numberWithBool:YES]];
-//    [query orderByDescending:@"StartDate"];
-//    
-//    NSMutableArray *allObjects = [NSMutableArray array];
-//    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-//        if (!error) {
-//
-//            if ([allObjects count] == 0) {
-//                
-//                [allObjects addObjectsFromArray:objects];
-//                
-//                
-//            }
-//            [myCaraousel reloadData];
-//            
-//        } else {
-//            // Log details of the failure
-//            NSLog(@"Error: %@ %@", error, [error userInfo]);
-//        }
-//    }];
     
     return allObjects;
 }

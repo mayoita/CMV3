@@ -55,6 +55,7 @@
     int widthOfLastImage;
     id standardLayout;
     bool  talking;
+    Events *selectedEvent;
 }
 
 
@@ -424,7 +425,7 @@ int Office;
                                                                    return nil;
                                                                }];
     } else {
-        UIImage *imageFile= [UIImage imageNamed:@"Test.png"];
+        UIImage *imageFile= [UIImage imageWithContentsOfFile:downloadingFilePath];
         
         [(FXImageView *)view setImage:imageFile];
     }
@@ -444,20 +445,27 @@ int Office;
     [self configureDetailItemForRow:index viewController:self.eventDelegate];
     
     if (iPHONE) {
-        
-        [self presentViewController:self.eventDelegate animated:YES completion:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+        CMVEventViewController *eventDetail = [storyboard instantiateViewControllerWithIdentifier:@"EventViewControlleriPhone"];
+        if (eventDetail) {
+            [eventDetail selectedEvent:selectedEvent];
+        }
+        [self presentViewController:eventDetail animated:YES completion:nil];
         
     } else {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
+        CMVEventViewController *eventDetail = [storyboard instantiateViewControllerWithIdentifier:@"EventDetailsForSlots"];
+        if (eventDetail) {
+            [eventDetail selectedEvent:selectedEvent];
+        }
         [self presentViewController:self.eventDelegate animated:YES completion:nil];
     }
 }
 
 - (void)configureDetailItemForRow:(NSUInteger)row viewController:(CMVEventViewController *)viewController  {
     
-    Events *selectedEvent = [self.slotsEvents objectAtIndex:row];
-    if (_eventDelegate) {
-        [_eventDelegate selectedEvent:selectedEvent];
-    }
+    selectedEvent = [self.slotsEvents objectAtIndex:row];
+
     
 }
 

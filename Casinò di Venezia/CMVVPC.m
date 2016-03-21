@@ -12,6 +12,9 @@
 #import "CMVAppDelegate.h"
 #import <Parse/Parse.h>
 #import "CMVSetUpCurrency.h"
+#import <AWSDynamoDB/AWSDynamoDB.h>
+#import "VPC.h"
+#import "VPCPrize.h"
 
 #define cellIdentifier @"VPCCell"
 #define subArrayWithEuro 0
@@ -75,23 +78,26 @@ static NSNumberFormatter *sUserVisibleDateFormatter = nil;
 
 -(NSString *)getPrize {
     static NSString *prize=@"";
+    AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
     
-    PFQuery *query = [PFQuery queryWithClassName:@"VPCPrize"];
-    
-    [query setCachePolicy:kPFCachePolicyNetworkOnly];
-    if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-        [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-    }
-    [query getObjectInBackgroundWithId:@"9fLRcaEvMh" block:^(PFObject *object, NSError *error) {
-        
-        self.euro.text=object[@"Prize"];
-        self.euro.text=[self.checkCurrency setupCurrency:self.euro.text];
-        NSString *complete = [NSString stringWithFormat:NSLocalizedString(@"Classifica \"Venice Poker Championship\" conclusa al  %@",nil),
-                              object[@"Date"]];
-        self.standings.text=complete;
-        ;
-        
-    }];
+    [[dynamoDBObjectMapper load:[VPCPrize class] hashKey:@"1" rangeKey:nil]
+     continueWithBlock:^id(AWSTask *task) {
+         if (task.error) {
+             NSLog(@"The request failed. Error: [%@]", task.error);
+         }
+         if (task.exception) {
+             NSLog(@"The request failed. Exception: [%@]", task.exception);
+         }
+         if (task.result) {
+             VPCPrize *prize = task.result;
+             self.euro.text=prize.Prize;
+             self.euro.text=[self.checkCurrency setupCurrency:self.euro.text];
+             NSString *complete = [NSString stringWithFormat:NSLocalizedString(@"Classifica \"Venice Poker Championship\" conclusa al  %@",nil),
+                                   prize.Date];
+             self.standings.text=complete;
+         }
+         return nil;
+     }];
     
     return prize;
 }
@@ -112,33 +118,42 @@ static NSNumberFormatter *sUserVisibleDateFormatter = nil;
 
 -(NSMutableArray *)winners {
     if (!_winners) {
-        PFQuery *query = [PFQuery queryWithClassName:@"VPC"];
-    
-        
-        [query setCachePolicy:kPFCachePolicyNetworkOnly];
-        if (![[UIApplication sharedApplication].delegate performSelector:@selector(isParseReachable)]) {
-            [query setCachePolicy:kPFCachePolicyCacheThenNetwork];
-        }
-     
-        [query orderByDescending:@"Point"];
-        
         _winners = [NSMutableArray array];
-        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-            if (!error) {
-                
-                if ([_winners count] == 0) {
-                    
-                    [_winners addObjectsFromArray:objects];
-                    
-                    [self.tableView reloadData];
-                }
-                
-                
-            } else {
-                // Log details of the failure
-                NSLog(@"Error: %@ %@", error, [error userInfo]);
-            }
-        }];
+        AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+        
+        //DynamoScan
+        AWSDynamoDBScanExpression *scanExpression = [AWSDynamoDBScanExpression new];
+        scanExpression.limit = @50;
+        
+        [[dynamoDBObjectMapper scan:[VPC class]
+                         expression:scanExpression]
+         continueWithBlock:^id(AWSTask *task) {
+             if (task.error) {
+                 NSLog(@"The request failed. Error: [%@]", task.error);
+             }
+             if (task.exception) {
+                 NSLog(@"The request failed. Exception: [%@]", task.exception);
+             }
+             if (task.result) {
+                 AWSDynamoDBPaginatedOutput *paginatedOutput = task.result;
+                 if ([_winners count] == 0) {
+                 for (VPC *event in paginatedOutput.items) {
+                     
+                     [_winners addObject:event];
+                     
+                 }
+                     NSSortDescriptor *sortDescriptor;
+                     sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"Points"
+                                                                  ascending:NO];
+                     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+                     NSArray *sortedArray = [_winners sortedArrayUsingDescriptors:sortDescriptors];
+                     _winners = sortedArray;
+                     [self.tableView reloadData];
+                 }
+             }
+             return nil;
+         }];
+ 
     }
     
     return _winners;
@@ -163,14 +178,14 @@ static NSNumberFormatter *sUserVisibleDateFormatter = nil;
     
    CMVCellVPC *cell = (CMVCellVPC *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    PFObject *object=self.winners[indexPath.row];
+    VPC *object=self.winners[indexPath.row];
     
     
     cell.position.text=[NSString stringWithFormat:@"%ld",(long)indexPath.row+1];
     
-    cell.player.text=object[@"Name"];
+    cell.player.text=object.Name;
     
-    cell.point.text=[object[@"Point"] stringValue]; //[self userVisibleNumberString:object[@"Points"]];
+    cell.point.text=object.Points; //[self userVisibleNumberString:object[@"Points"]];
     
     return cell;
 }

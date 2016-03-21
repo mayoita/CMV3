@@ -525,8 +525,8 @@
             }
              ];
         }
-        //self.originalImage = image;
-        //[self updateProcessedImage];
+        self.originalImage = image;
+        [self updateProcessedImage];
     }
 }
 
