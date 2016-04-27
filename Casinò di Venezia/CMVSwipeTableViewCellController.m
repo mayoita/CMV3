@@ -13,7 +13,6 @@
 #import "CMVInfoViewController.h"
 #import "CMVAllEvents.h"
 #import "CMVAppDelegate.h"
-#import <Parse/Parse.h>
 #import "CMVEventKitController.h"
 #import "CMVSharedClass.h"
 

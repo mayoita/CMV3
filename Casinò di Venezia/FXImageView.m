@@ -33,7 +33,7 @@
 #import "FXImageView.h"
 #import "UIImage+FX.h"
 #import <objc/message.h>
-#import <Parse/Parse.h>
+
 
 
 @interface FXImageOperation : NSOperation
@@ -516,15 +516,7 @@
     {        
         //update processed image
         self.imageContentURL = nil;
-        if ([image isKindOfClass:[PFFile class]]) {
-            PFFile *a=(PFFile *)image;
-            [a getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
-               self.originalImage=[UIImage imageWithData:data];
-                self.originalImage=[self addText:self.originalImage text:self.textForImage];
-              [self updateProcessedImage];
-            }
-             ];
-        }
+
         self.originalImage = image;
         [self updateProcessedImage];
     }

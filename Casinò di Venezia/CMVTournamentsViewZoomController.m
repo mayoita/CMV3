@@ -13,7 +13,6 @@
 #import "CMVGameSplitViewController.h"
 #import "CMVTournamentsViewController.h"
 #import "CMVSharedClass.h"
-#import <Parse/Parse.h>
 #import "CMVEventKitShared.h"
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import "Tournament.h"

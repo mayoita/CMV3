@@ -25,9 +25,9 @@
 #import "EventAds.h"
 #import "Festivity.h"
 #import "News.h"
+#import "CMVEventViewController.h"
+#import "Events.h"
 
-
-#import <Parse/Parse.h>
 #import "UIViewController+ECSlidingViewController.h"
 
 #define VE 0
@@ -35,7 +35,7 @@
 
 @interface CMVFirstTabbarItemViewController () {
     DVOMarqueeView *labelMarquee;
-    
+    Events *selectedEvent;
 }
 @property (strong, nonatomic) UIImageView *myAds;
 @property (weak, nonatomic) IBOutlet UILabel *chatWithUs;
@@ -118,9 +118,11 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 Jackpot *item = task.result;
+                 self.jackpot.text=[NSString stringWithFormat:@"%@ €", item.jackpot];
+             });
              
-             Jackpot *item = task.result;
-             self.jackpot.text=[NSString stringWithFormat:@"%@ €", item.jackpot];
          }
          return nil;
      }];
@@ -133,7 +135,12 @@ Festivity *storageFestivity;
 //        [self addLabelMarquee];
 //    }
     [KGModal sharedInstance].closeButtonType = KGModalCloseButtonTypeLeft;
-    [self showAds];
+    CMVAppDelegate *appDelegate=(CMVAppDelegate *)[UIApplication sharedApplication].delegate;
+    if (appDelegate.showAD) {
+        appDelegate.showAD = false;
+        [self showAds];
+    }
+    
     
 }
 
@@ -149,24 +156,69 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
-             EventAds *item = task.result;
-             BOOL visible = item.visible;
-             if (visible) {
-                  UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 260, 430)];
-                 self.myAds = [[UIImageView alloc] initWithFrame:contentView.bounds];
-                 self.myAds.backgroundColor = [UIColor whiteColor];
-                 item.imageView= self.myAds;
-                 self.myAds.image = item.image;
-                 [contentView addSubview:self.myAds];
-                [[KGModal sharedInstance] showWithContentView:contentView andAnimated:YES];
-             }
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 EventAds *item = task.result;
+                 BOOL visible = item.visible;
+                 if (visible) {
+                     UIView *contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 260, 260)];
+                     self.myAds = [[UIImageView alloc] initWithFrame:contentView.bounds];
+                     self.myAds.backgroundColor = [UIColor whiteColor];
+                     item.imageView= self.myAds;
+                     self.myAds.image = item.image;
+                     [contentView addSubview:self.myAds];
+                     CGFloat btnW = 80;
+                     CGFloat btnH = 30;
+                     UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                     btn.frame = CGRectMake(contentView.frame.size.width/2-btnW/2, 205, btnW, btnH);
+                     [btn setTitle:@"OPEN" forState:UIControlStateNormal];
+                     [btn setTintColor:[UIColor whiteColor]];
+                     [btn setBackgroundColor:[UIColor colorWithRed: 0.05 green: 0.79 blue: 0.19 alpha: 1]];
+                     [btn addTarget:self action:@selector(changeCloseButtonType:) forControlEvents:UIControlEventTouchUpInside];
+                     [contentView addSubview:btn];
+                     [[KGModal sharedInstance] showWithContentView:contentView andAnimated:YES];
+                 }
+             });
+
          }
          return nil;
     }];
  
 }
-
+- (void)changeCloseButtonType:(id)sender{
+    if (iPHONE) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+        CMVEventViewController *eventDetail = [storyboard instantiateViewControllerWithIdentifier:@"EventViewControlleriPhone"];
+        if (eventDetail) {
+            AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
+            
+            [[dynamoDBObjectMapper load:[Events class] hashKey:@"15-16 JANUARY 2014: ARRIVAL OF EGYPTIAN GOLD" rangeKey:@"07/02/2014"]
+             continueWithBlock:^id(AWSTask *task) {
+                 if (task.error) {
+                     NSLog(@"The request failed. Error: [%@]", task.error);
+                 }
+                 if (task.exception) {
+                     NSLog(@"The request failed. Exception: [%@]", task.exception);
+                 }
+                 if (task.result) {
+                     selectedEvent=task.result;
+                     [eventDetail selectedEvent:selectedEvent];
+                     [self presentViewController:eventDetail animated:YES completion:nil];
+                     [[KGModal sharedInstance] hide ];
+                 }
+                 return nil;
+             }];
+        }
+        
+        
+    } else {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main_iPad" bundle:nil];
+        CMVEventViewController *eventDetail = [storyboard instantiateViewControllerWithIdentifier:@"EventDetailsForSlots"];
+        if (eventDetail) {
+           // [eventDetail selectedEvent:selectedEvent];
+        }
+        [self presentViewController:eventDetail animated:YES completion:nil];
+    }
+}
 
 -(void)setOffHelper {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -296,9 +348,11 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 Festivity *item = task.result;
+                 storageFestivity = item.festivity;
+             });
              
-             Festivity *item = task.result;
-             storageFestivity = item.festivity;
          }
          return nil;
      }];
@@ -337,44 +391,46 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
-             News *item = task.result;
-             switch ([CMVLocalize myDeviceLocaleIs]) {
-                 case IT :
-                     self.labelMarqueeText.text=item.NewsIT;
-                     break;
-                 case DE :
-                     self.labelMarqueeText.text=item.NewsDE;
-                     break;
-                 case FR :
-                     self.labelMarqueeText.text=item.NewsFR;
-                     break;
-                 case ES :
-                     self.labelMarqueeText.text=item.NewsES;
-                     break;
-                 case RU  :
-                     self.labelMarqueeText.text=item.NewsRU;
-                     break;
-                 case ZH:
-                     self.labelMarqueeText.text=item.NewsZH;
-                     break;
-                     
-                 default:
-                     self.labelMarqueeText.text=item.News;
-                     break;
-             }
-             
-             self.labelMarqueeText.textColor=[UIColor whiteColor];
-             [ self.labelMarqueeText sizeToFit];
-             
-             labelMarquee = [[DVOMarqueeView alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
-             labelMarquee.viewToScroll =  self.labelMarqueeText;
-             CMVGradientForNews *gradient=[[CMVGradientForNews alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
-             self.labelMarquee=labelMarquee;
-             [self.view addSubview:labelMarquee];
-             [self.view addSubview:gradient];
-             
-             [labelMarquee beginScrolling];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 News *item = task.result;
+                 switch ([CMVLocalize myDeviceLocaleIs]) {
+                     case IT :
+                         self.labelMarqueeText.text=item.NewsIT;
+                         break;
+                     case DE :
+                         self.labelMarqueeText.text=item.NewsDE;
+                         break;
+                     case FR :
+                         self.labelMarqueeText.text=item.NewsFR;
+                         break;
+                     case ES :
+                         self.labelMarqueeText.text=item.NewsES;
+                         break;
+                     case RU  :
+                         self.labelMarqueeText.text=item.NewsRU;
+                         break;
+                     case ZH:
+                         self.labelMarqueeText.text=item.NewsZH;
+                         break;
+                         
+                     default:
+                         self.labelMarqueeText.text=item.News;
+                         break;
+                 }
+                 
+                 self.labelMarqueeText.textColor=[UIColor whiteColor];
+                 [ self.labelMarqueeText sizeToFit];
+                 
+                 labelMarquee = [[DVOMarqueeView alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
+                 labelMarquee.viewToScroll =  self.labelMarqueeText;
+                 CMVGradientForNews *gradient=[[CMVGradientForNews alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
+                 self.labelMarquee=labelMarquee;
+                 [self.view addSubview:labelMarquee];
+                 [self.view addSubview:gradient];
+                 
+                 [labelMarquee beginScrolling];
+             });
+            
          }
          return nil;
      }];
@@ -396,7 +452,7 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
+             dispatch_async(dispatch_get_main_queue(), ^{
              News *item = task.result;
              switch ([CMVLocalize myDeviceLocaleIs]) {
                  case IT :
@@ -425,6 +481,7 @@ Festivity *storageFestivity;
              
              [self.labelMarqueeText sizeToFit];
              self.labelMarquee.viewToScroll =  self.labelMarqueeText;
+                 });
          }
          return nil;
      }];

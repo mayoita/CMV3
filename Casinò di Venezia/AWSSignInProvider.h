@@ -17,6 +17,8 @@
 @property (readonly, getter=isLoggedIn) BOOL loggedIn;
 @property (readonly) NSURL *imageURL;
 @property (readonly) NSString *userName;
+@property (readonly) NSString *userEmail;
+@property (readonly) NSString *userLocation;
 
 - (void)login;
 - (void)logout;

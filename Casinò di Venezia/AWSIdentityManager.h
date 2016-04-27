@@ -45,6 +45,16 @@ typedef NS_ENUM(NSInteger, AWSSignInProviderType) {
  * @return user name, if user is signed-in
  */
 @property (readonly) NSString *userName;
+/**
+ * User email acquired from third party identity provider, such as Facebook or Google.
+ * @return user name, if user is signed-in
+ */
+@property (readonly) NSString *userEmail;
+/**
+ * User location acquired from third party identity provider, such as Facebook or Google.
+ * @return user name, if user is signed-in
+ */
+@property (readonly) NSString *userLocation;
 
 /**
  * Amazon Cognito User Identity ID. This uniquely identifies the user, regardless of

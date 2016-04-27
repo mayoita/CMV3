@@ -15,6 +15,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        _color=[UIColor colorWithRed: 0.886 green: 0 blue: 0 alpha: 1];
     }
     return self;
 }

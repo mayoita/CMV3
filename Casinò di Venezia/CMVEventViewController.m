@@ -26,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIView *whiteView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageHeightConstrait;
 
+@property (weak, nonatomic) IBOutlet UIButton *book;
 
 
 @end
@@ -51,19 +52,21 @@
     
     self.imagePager.pageControl.currentPageIndicatorTintColor = [UIColor lightGrayColor];
     self.imagePager.pageControl.pageIndicatorTintColor = [UIColor blackColor];
-    self.closeButton.color=[UIColor whiteColor];
     self.eventName.font=GOTHAM_BOOK(18);
     self.eventName.textColor=[UIColor redColor];
     self.eventDate.font=GOTHAM_BOOK(16);
     self.eventDate.textColor=[UIColor whiteColor];
     self.closeButton.color=[UIColor redColor];
-    
    
+    
+    if ([_event.Book isEqualToString:@"ON"]) {
+        _book.hidden = false;
+    }
    
 }
 
 -(void)viewWillAppear:(BOOL)animated {
- 
+ [self.closeButton setNeedsDisplay];
     self.eventDescription.font=GOTHAM_XLight(14);
     self.eventDescription.contentOffset=CGPointZero;
     [self refreshUI];
@@ -401,6 +404,12 @@
             [self.toolbar setItems:nil animated:NO];
         //self.toolbar.hidden=YES;
     }
+}
+- (IBAction)booking:(id)sender {
+    if (![_event.URLBook isEqualToString:@"NULL"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: _event.URLBook]];
+    }
+    
 }
 
 

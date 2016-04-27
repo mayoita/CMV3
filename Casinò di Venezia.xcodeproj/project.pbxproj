@@ -40,8 +40,6 @@
 		220D11171848EA500075A172 /* CMVInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 220D11161848EA500075A172 /* CMVInfoViewController.m */; };
 		2210778019D961040005FB3B /* Aachen Bold Plain.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2210777F19D961040005FB3B /* Aachen Bold Plain.ttf */; };
 		2210778219D989110005FB3B /* TournamentCellNew.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2210778119D989110005FB3B /* TournamentCellNew.xib */; };
-		221FAF4218C5EB1200B77952 /* MyLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 221FAF3F18C5EB1200B77952 /* MyLogInViewController.m */; };
-		221FAF4318C5EB1200B77952 /* MySignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 221FAF4118C5EB1200B77952 /* MySignUpViewController.m */; };
 		221FAF6B18C6191200B77952 /* CMVCloseButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 221FAF6A18C6191200B77952 /* CMVCloseButton.m */; };
 		221FAF6E18C625B400B77952 /* CMVGreenButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 221FAF6D18C625B400B77952 /* CMVGreenButton.m */; };
 		221FAF7118C62BB900B77952 /* CMVMenuButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 221FAF7018C62BB900B77952 /* CMVMenuButton.m */; };
@@ -104,7 +102,6 @@
 		22540A40191912F50082D643 /* CMVEventKitShared.m in Sources */ = {isa = PBXBuildFile; fileRef = 22540A3F191912F50082D643 /* CMVEventKitShared.m */; };
 		226032BB1B2F573D0003E72B /* FrecciaHome.png in Resources */ = {isa = PBXBuildFile; fileRef = 226032BA1B2F573D0003E72B /* FrecciaHome.png */; };
 		226032BF1B2F6FF10003E72B /* KGModal.m in Sources */ = {isa = PBXBuildFile; fileRef = 226032BE1B2F6FF10003E72B /* KGModal.m */; };
-		226032C31B2F7C930003E72B /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 226032C21B2F7C930003E72B /* ParseCrashReporting.framework */; };
 		226032C71B2F7D880003E72B /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 226032C61B2F7D880003E72B /* libstdc++.6.0.9.dylib */; };
 		226032C81B30A9370003E72B /* HomeLike.png in Resources */ = {isa = PBXBuildFile; fileRef = 226032CA1B30A9370003E72B /* HomeLike.png */; };
 		22610DB0191CF5E900BB16D9 /* CMVSharedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 22610DAF191CF5E900BB16D9 /* CMVSharedButton.m */; };
@@ -162,7 +159,6 @@
 		2292A1E4190E9B0E00BD2792 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2292A1E3190E9B0E00BD2792 /* FBShimmeringLayer.m */; };
 		2294A97D18C4E42000A9F51C /* CMVBackgroundSwipeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2294A97C18C4E42000A9F51C /* CMVBackgroundSwipeCell.m */; };
 		2296409A1B2766D100D2DFBF /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 229640991B2766D100D2DFBF /* Bolts.framework */; };
-		2296409E1B2766E800D2DFBF /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2296409D1B2766E800D2DFBF /* ParseUI.framework */; };
 		2297E5AD18CDCA1000072806 /* CMVMenuBack.m in Sources */ = {isa = PBXBuildFile; fileRef = 2297E5AC18CDCA1000072806 /* CMVMenuBack.m */; };
 		2297E5B018CDD61400072806 /* CMVWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 2297E5AF18CDD61400072806 /* CMVWeb.m */; };
 		2297E5B318CDDB4200072806 /* CMVMail.m in Sources */ = {isa = PBXBuildFile; fileRef = 2297E5B218CDDB4200072806 /* CMVMail.m */; };
@@ -347,7 +343,6 @@
 		22D9DBE119DC31DC005AB952 /* CMVPokerCellBackgroundGrey.m in Sources */ = {isa = PBXBuildFile; fileRef = 22D9DBE019DC31DC005AB952 /* CMVPokerCellBackgroundGrey.m */; };
 		22D9DBE319DD6109005AB952 /* PokerHourCellNewiPAD.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D9DBE219DD6109005AB952 /* PokerHourCellNewiPAD.xib */; };
 		22D9DBE519DD778A005AB952 /* TournamentCellNewiPAD.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D9DBE419DD778A005AB952 /* TournamentCellNewiPAD.xib */; };
-		22DA54181C7DC4C40075B06F /* AWSMobileClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 22DA54171C7DC4C40075B06F /* AWSMobileClient.m */; };
 		22DA541F1C7DC5660075B06F /* AWSDynamoDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DA54191C7DC5660075B06F /* AWSDynamoDB.framework */; };
 		22DA54201C7DC5660075B06F /* AWSCognito.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DA541A1C7DC5660075B06F /* AWSCognito.framework */; };
 		22DA54211C7DC5660075B06F /* AWSCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DA541B1C7DC5660075B06F /* AWSCore.framework */; };
@@ -377,11 +372,7 @@
 		22F6319F1BB5587100C1BD5A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F6319D1BB5587100C1BD5A /* FBSDKCoreKit.framework */; };
 		22F631A01BB5587100C1BD5A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F6319E1BB5587100C1BD5A /* FBSDKShareKit.framework */; };
 		22F631A21BB558BF00C1BD5A /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F631A11BB558BF00C1BD5A /* FBSDKLoginKit.framework */; };
-		22F631AA1BB55AF100C1BD5A /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F631A41BB55AF100C1BD5A /* Parse.framework */; };
-		22F631AC1BB55AF100C1BD5A /* ParseFacebookUtilsV4.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F631A61BB55AF100C1BD5A /* ParseFacebookUtilsV4.framework */; };
-		22F631AD1BB55AF100C1BD5A /* ParseTwitterUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F631A71BB55AF100C1BD5A /* ParseTwitterUtils.framework */; };
 		22F631BE1BB5774100C1BD5A /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F631BD1BB5774100C1BD5A /* libGoogleAnalyticsServices.a */; };
-		22F632041BB5820C00C1BD5A /* ParseFacebookUtils.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F632031BB5820C00C1BD5A /* ParseFacebookUtils.framework */; };
 		22F632281BB95C5700C1BD5A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22F632271BB95C5700C1BD5A /* Info.plist */; };
 		22F6322A1BB97C7900C1BD5A /* Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 22F632291BB97C7900C1BD5A /* Test.png */; };
 		22F6322D1BB9859000C1BD5A /* speak_f.png in Resources */ = {isa = PBXBuildFile; fileRef = 22F6322B1BB9859000C1BD5A /* speak_f.png */; };
@@ -389,6 +380,9 @@
 		22F6FCEE19D17067003AB1D1 /* MEMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F6FCED19D17067003AB1D1 /* MEMenuViewController.m */; };
 		22F6FCF119D1A161003AB1D1 /* CMVTabBarControllerNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F6FCF019D1A161003AB1D1 /* CMVTabBarControllerNew.m */; };
 		22F6FCF419D1AC65003AB1D1 /* CMVHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F6FCF319D1AC65003AB1D1 /* CMVHomeViewController.m */; };
+		22F7042A1CC50C690050429B /* AWSPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F704291CC50C690050429B /* AWSPushManager.m */; };
+		22F7042C1CC50E6B0050429B /* AWSSNS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F7042B1CC50E6B0050429B /* AWSSNS.framework */; };
+		22F7042F1CC50EC50050429B /* AWSMobileClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F7042E1CC50EC50050429B /* AWSMobileClient.m */; };
 		22F727661876E62A00CB57D4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F727651876E62A00CB57D4 /* MobileCoreServices.framework */; };
 		22F727681876E63800CB57D4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F727671876E63800CB57D4 /* CFNetwork.framework */; };
 		22F727871876F76100CB57D4 /* SanGeremia.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 22F727861876F76100CB57D4 /* SanGeremia.gpx */; };
@@ -406,6 +400,8 @@
 		22FBACFE1C98465C00C63586 /* ServicesVSP.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBACFD1C98465C00C63586 /* ServicesVSP.m */; };
 		22FBAD011C98563C00C63586 /* VPCPrize.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBAD001C98563C00C63586 /* VPCPrize.m */; };
 		22FBAD041C98565400C63586 /* VPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FBAD031C98565400C63586 /* VPC.m */; };
+		22FE878D1CA17F5D00361490 /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 22FE878A1CA17F5D00361490 /* SignIn.storyboard */; };
+		22FE878E1CA17F5D00361490 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FE878C1CA17F5D00361490 /* SignInViewController.m */; };
 		233846F38AB7BCEB4A341695 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29304C30B2E11CE3F312872A /* QuickLook.framework */; };
 		6AF44DADA09C92967E09E188 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29304C30B2E11CE3F312872A /* QuickLook.framework */; };
 		CD3228D8185BBE3200610B17 /* fairroulette_458X972.png in Resources */ = {isa = PBXBuildFile; fileRef = CD3228D7185BBE3200610B17 /* fairroulette_458X972.png */; };
@@ -490,10 +486,6 @@
 		2210DEDE1A63E2D9005CB064 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main_iPad.strings; sourceTree = "<group>"; };
 		2210DEDF1A63E2E3005CB064 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Main_iPad.strings; sourceTree = "<group>"; };
 		2210DEE01A63E2ED005CB064 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main_iPad.strings"; sourceTree = "<group>"; };
-		221FAF3E18C5EB1200B77952 /* MyLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyLogInViewController.h; sourceTree = "<group>"; };
-		221FAF3F18C5EB1200B77952 /* MyLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyLogInViewController.m; sourceTree = "<group>"; };
-		221FAF4018C5EB1200B77952 /* MySignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MySignUpViewController.h; sourceTree = "<group>"; };
-		221FAF4118C5EB1200B77952 /* MySignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MySignUpViewController.m; sourceTree = "<group>"; };
 		221FAF6918C6191200B77952 /* CMVCloseButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVCloseButton.h; sourceTree = "<group>"; };
 		221FAF6A18C6191200B77952 /* CMVCloseButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVCloseButton.m; sourceTree = "<group>"; };
 		221FAF6C18C625B400B77952 /* CMVGreenButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVGreenButton.h; sourceTree = "<group>"; };
@@ -637,7 +629,6 @@
 		226032BA1B2F573D0003E72B /* FrecciaHome.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FrecciaHome.png; sourceTree = "<group>"; };
 		226032BD1B2F6FF10003E72B /* KGModal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGModal.h; sourceTree = "<group>"; };
 		226032BE1B2F6FF10003E72B /* KGModal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGModal.m; sourceTree = "<group>"; };
-		226032C21B2F7C930003E72B /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
 		226032C41B2F7D530003E72B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		226032C61B2F7D880003E72B /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "usr/lib/libstdc++.6.0.9.dylib"; sourceTree = SDKROOT; };
 		226032C91B30A9370003E72B /* Base */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Base; path = Base.lproj/HomeLike.png; sourceTree = "<group>"; };
@@ -726,10 +717,7 @@
 		2292A1E3190E9B0E00BD2792 /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		2294A97B18C4E42000A9F51C /* CMVBackgroundSwipeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVBackgroundSwipeCell.h; sourceTree = "<group>"; };
 		2294A97C18C4E42000A9F51C /* CMVBackgroundSwipeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVBackgroundSwipeCell.m; sourceTree = "<group>"; };
-		229640971B2766C900D2DFBF /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		229640991B2766D100D2DFBF /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		2296409B1B2766DB00D2DFBF /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
-		2296409D1B2766E800D2DFBF /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		2297E5AB18CDCA1000072806 /* CMVMenuBack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVMenuBack.h; sourceTree = "<group>"; };
 		2297E5AC18CDCA1000072806 /* CMVMenuBack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVMenuBack.m; sourceTree = "<group>"; };
 		2297E5AE18CDD61400072806 /* CMVWeb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVWeb.h; sourceTree = "<group>"; };
@@ -1106,8 +1094,6 @@
 		22D9DBE219DD6109005AB952 /* PokerHourCellNewiPAD.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PokerHourCellNewiPAD.xib; sourceTree = "<group>"; };
 		22D9DBE419DD778A005AB952 /* TournamentCellNewiPAD.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TournamentCellNewiPAD.xib; sourceTree = "<group>"; };
 		22DA54151C7DC4C40075B06F /* AWSConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSConfiguration.h; sourceTree = "<group>"; };
-		22DA54161C7DC4C40075B06F /* AWSMobileClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSMobileClient.h; sourceTree = "<group>"; };
-		22DA54171C7DC4C40075B06F /* AWSMobileClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSMobileClient.m; sourceTree = "<group>"; };
 		22DA54191C7DC5660075B06F /* AWSDynamoDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSDynamoDB.framework; sourceTree = "<group>"; };
 		22DA541A1C7DC5660075B06F /* AWSCognito.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCognito.framework; sourceTree = "<group>"; };
 		22DA541B1C7DC5660075B06F /* AWSCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSCore.framework; sourceTree = "<group>"; };
@@ -1153,11 +1139,6 @@
 		22F6319E1BB5587100C1BD5A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		22F631A11BB558BF00C1BD5A /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		22F631A31BB55AF100C1BD5A /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
-		22F631A41BB55AF100C1BD5A /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
-		22F631A51BB55AF100C1BD5A /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
-		22F631A61BB55AF100C1BD5A /* ParseFacebookUtilsV4.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtilsV4.framework; sourceTree = "<group>"; };
-		22F631A71BB55AF100C1BD5A /* ParseTwitterUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseTwitterUtils.framework; sourceTree = "<group>"; };
-		22F631A81BB55AF100C1BD5A /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
 		22F631B11BB5724300C1BD5A /* GAI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		22F631B21BB5724300C1BD5A /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
 		22F631B31BB5724300C1BD5A /* GAIEcommerceFields.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
@@ -1169,7 +1150,6 @@
 		22F631B91BB5724300C1BD5A /* GAITrackedViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
 		22F631BA1BB5724300C1BD5A /* GAITracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		22F631BD1BB5774100C1BD5A /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
-		22F632031BB5820C00C1BD5A /* ParseFacebookUtils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseFacebookUtils.framework; sourceTree = "<group>"; };
 		22F632271BB95C5700C1BD5A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22F632291BB97C7900C1BD5A /* Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Test.png; path = "Casinò di Venezia/Test.png"; sourceTree = "<group>"; };
 		22F6322B1BB9859000C1BD5A /* speak_f.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = speak_f.png; path = "Casinò di Venezia/speak_f.png"; sourceTree = "<group>"; };
@@ -1180,6 +1160,11 @@
 		22F6FCF019D1A161003AB1D1 /* CMVTabBarControllerNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVTabBarControllerNew.m; sourceTree = "<group>"; };
 		22F6FCF219D1AC65003AB1D1 /* CMVHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVHomeViewController.h; sourceTree = "<group>"; };
 		22F6FCF319D1AC65003AB1D1 /* CMVHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVHomeViewController.m; sourceTree = "<group>"; };
+		22F704281CC50C690050429B /* AWSPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSPushManager.h; sourceTree = "<group>"; };
+		22F704291CC50C690050429B /* AWSPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSPushManager.m; sourceTree = "<group>"; };
+		22F7042B1CC50E6B0050429B /* AWSSNS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AWSSNS.framework; sourceTree = "<group>"; };
+		22F7042D1CC50EC50050429B /* AWSMobileClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AWSMobileClient.h; sourceTree = "<group>"; };
+		22F7042E1CC50EC50050429B /* AWSMobileClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AWSMobileClient.m; sourceTree = "<group>"; };
 		22F727651876E62A00CB57D4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		22F727671876E63800CB57D4 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		22F727861876F76100CB57D4 /* SanGeremia.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = SanGeremia.gpx; path = "Casinò di Venezia/SanGeremia.gpx"; sourceTree = "<group>"; };
@@ -1205,13 +1190,15 @@
 		22FBAD001C98563C00C63586 /* VPCPrize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPCPrize.m; sourceTree = "<group>"; };
 		22FBAD021C98565400C63586 /* VPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPC.h; sourceTree = "<group>"; };
 		22FBAD031C98565400C63586 /* VPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPC.m; sourceTree = "<group>"; };
+		22FE878A1CA17F5D00361490 /* SignIn.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SignIn.storyboard; sourceTree = "<group>"; };
+		22FE878B1CA17F5D00361490 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
+		22FE878C1CA17F5D00361490 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		29304C30B2E11CE3F312872A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		CD3228D7185BBE3200610B17 /* fairroulette_458X972.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fairroulette_458X972.png; sourceTree = "<group>"; };
 		CD429E2618C3A1AB0015ED37 /* CRMotionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRMotionView.h; sourceTree = "<group>"; };
 		CD429E2718C3A1AB0015ED37 /* CRMotionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRMotionView.m; sourceTree = "<group>"; };
 		CD429E2818C3A1AB0015ED37 /* UIScrollView+CRScrollIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+CRScrollIndicator.h"; sourceTree = "<group>"; };
 		CD429E2918C3A1AB0015ED37 /* UIScrollView+CRScrollIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+CRScrollIndicator.m"; sourceTree = "<group>"; };
-		CD7353D618C12502002C0523 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
 		CD95CE2C185E354C00879213 /* CMVArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVArrow.h; sourceTree = "<group>"; };
 		CD95CE2D185E354C00879213 /* CMVArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMVArrow.m; sourceTree = "<group>"; };
 		CD95CE2F185E39F400879213 /* CMVArrowSx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMVArrowSx.h; sourceTree = "<group>"; };
@@ -1243,19 +1230,15 @@
 				22097790192B5E19004026BD /* CoreData.framework in Frameworks */,
 				22DA54281C7DC57A0075B06F /* GoogleSignIn.framework in Frameworks */,
 				22B544DC1852195800986E18 /* Social.framework in Frameworks */,
-				2296409E1B2766E800D2DFBF /* ParseUI.framework in Frameworks */,
 				22752D731861A05400385D04 /* SystemConfiguration.framework in Frameworks */,
 				22D3AF4518AA57F90023BAE2 /* Security.framework in Frameworks */,
-				22F631AA1BB55AF100C1BD5A /* Parse.framework in Frameworks */,
 				2230D87A181FBC8A0060C568 /* QuartzCore.framework in Frameworks */,
 				22D3AF4318AA57CB0023BAE2 /* AudioToolbox.framework in Frameworks */,
 				22F727681876E63800CB57D4 /* CFNetwork.framework in Frameworks */,
 				22F631A01BB5587100C1BD5A /* FBSDKShareKit.framework in Frameworks */,
 				2296409A1B2766D100D2DFBF /* Bolts.framework in Frameworks */,
-				22F631AD1BB55AF100C1BD5A /* ParseTwitterUtils.framework in Frameworks */,
 				22DA54201C7DC5660075B06F /* AWSCognito.framework in Frameworks */,
 				22DA54231C7DC5660075B06F /* AWSMobileAnalytics.framework in Frameworks */,
-				22F631AC1BB55AF100C1BD5A /* ParseFacebookUtilsV4.framework in Frameworks */,
 				22752D771861A07700385D04 /* libsqlite3.0.dylib in Frameworks */,
 				22752D751861A05C00385D04 /* CoreTelephony.framework in Frameworks */,
 				22752D711861A04700385D04 /* CoreText.framework in Frameworks */,
@@ -1263,8 +1246,6 @@
 				22DA541F1C7DC5660075B06F /* AWSDynamoDB.framework in Frameworks */,
 				22CCCD521850A64E0088E89F /* EventKitUI.framework in Frameworks */,
 				22CCCD501850A6470088E89F /* EventKit.framework in Frameworks */,
-				22F632041BB5820C00C1BD5A /* ParseFacebookUtils.framework in Frameworks */,
-				226032C31B2F7C930003E72B /* ParseCrashReporting.framework in Frameworks */,
 				22FA36B2184612C500D8A8C8 /* CoreLocation.framework in Frameworks */,
 				22DA54211C7DC5660075B06F /* AWSCore.framework in Frameworks */,
 				22DA54241C7DC5660075B06F /* AWSS3.framework in Frameworks */,
@@ -1272,6 +1253,7 @@
 				2230D87C181FBC9E0060C568 /* libz.dylib in Frameworks */,
 				22F6319F1BB5587100C1BD5A /* FBSDKCoreKit.framework in Frameworks */,
 				22CF445F181A9AD70062FC38 /* CoreGraphics.framework in Frameworks */,
+				22F7042C1CC50E6B0050429B /* AWSSNS.framework in Frameworks */,
 				22CF4461181A9AD70062FC38 /* UIKit.framework in Frameworks */,
 				22F631A21BB558BF00C1BD5A /* FBSDKLoginKit.framework in Frameworks */,
 				22CF445D181A9AD70062FC38 /* Foundation.framework in Frameworks */,
@@ -1772,6 +1754,7 @@
 		22A3498D1844BE2300D2B543 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				22FE87891CA17F4F00361490 /* SignIn */,
 				22FBAD021C98565400C63586 /* VPC.h */,
 				22FBAD031C98565400C63586 /* VPC.m */,
 				22FBACFF1C98563C00C63586 /* VPCPrize.h */,
@@ -1823,10 +1806,6 @@
 				22DAAD32189FE62F00435B50 /* CMVREstaurantViewController.m */,
 				22D3AF4818AA5F190023BAE2 /* CMVLogInViewController.h */,
 				22D3AF4918AA5F190023BAE2 /* CMVLogInViewController.m */,
-				221FAF3E18C5EB1200B77952 /* MyLogInViewController.h */,
-				221FAF3F18C5EB1200B77952 /* MyLogInViewController.m */,
-				221FAF4018C5EB1200B77952 /* MySignUpViewController.h */,
-				221FAF4118C5EB1200B77952 /* MySignUpViewController.m */,
 				22AF513918E174BC006568DA /* CMVMenuRestaurantViewController.h */,
 				22AF513A18E174BC006568DA /* CMVMenuRestaurantViewController.m */,
 				2287F4AB18E1E09500FC379B /* CMVPushNews.h */,
@@ -2079,7 +2058,6 @@
 				2253C0C61A530510004FBCC4 /* CMV_VE_iOS7_button_centerR@2x.png */,
 				22C104051A52CA15002675A4 /* Main_iPhone.storyboard */,
 				22C104071A52CA15002675A4 /* Main_iPad.storyboard */,
-				CD7353D618C12502002C0523 /* Parse.framework */,
 				22C3DE17184E2ED900464BCF /* Settings.bundle */,
 				22A3499A1844CEF500D2B543 /* Venezia.gpx */,
 				22A3499B1844CEF500D2B543 /* CaNoghera.gpx */,
@@ -2104,6 +2082,7 @@
 		22CF445B181A9AD70062FC38 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				22F7042B1CC50E6B0050429B /* AWSSNS.framework */,
 				22DA543D1C7DE8780075B06F /* StoreKit.framework */,
 				22DA54251C7DC57A0075B06F /* GoogleSignIn.bundle */,
 				22DA54261C7DC57A0075B06F /* GoogleSignIn.framework */,
@@ -2115,24 +2094,14 @@
 				22DA541E1C7DC5660075B06F /* AWSS3.framework */,
 				2242D67B1C6E01CC00C94889 /* libSupport.a */,
 				2242D6781C6E00A100C94889 /* CoreSpotlight.framework */,
-				22F632031BB5820C00C1BD5A /* ParseFacebookUtils.framework */,
 				22F631BD1BB5774100C1BD5A /* libGoogleAnalyticsServices.a */,
 				22F631A31BB55AF100C1BD5A /* Bolts.framework */,
-				22F631A41BB55AF100C1BD5A /* Parse.framework */,
-				22F631A51BB55AF100C1BD5A /* ParseCrashReporting.framework */,
-				22F631A61BB55AF100C1BD5A /* ParseFacebookUtilsV4.framework */,
-				22F631A71BB55AF100C1BD5A /* ParseTwitterUtils.framework */,
-				22F631A81BB55AF100C1BD5A /* ParseUI.framework */,
 				22F631A11BB558BF00C1BD5A /* FBSDKLoginKit.framework */,
 				22F6319D1BB5587100C1BD5A /* FBSDKCoreKit.framework */,
 				22F6319E1BB5587100C1BD5A /* FBSDKShareKit.framework */,
 				226032C61B2F7D880003E72B /* libstdc++.6.0.9.dylib */,
 				226032C41B2F7D530003E72B /* libsqlite3.dylib */,
-				226032C21B2F7C930003E72B /* ParseCrashReporting.framework */,
-				2296409D1B2766E800D2DFBF /* ParseUI.framework */,
-				2296409B1B2766DB00D2DFBF /* ParseFacebookUtilsV4.framework */,
 				229640991B2766D100D2DFBF /* Bolts.framework */,
-				229640971B2766C900D2DFBF /* Parse.framework */,
 				2209778F192B5E19004026BD /* CoreData.framework */,
 				22D3AF4418AA57F90023BAE2 /* Security.framework */,
 				22D3AF4218AA57CB0023BAE2 /* AudioToolbox.framework */,
@@ -2260,13 +2229,14 @@
 		22DA54141C7DC4930075B06F /* AWS */ = {
 			isa = PBXGroup;
 			children = (
+				22F704271CC50C5D0050429B /* Push */,
 				22DA54361C7DC6110075B06F /* CloudLogic */,
 				22DA54321C7DC5FF0075B06F /* Utils */,
 				22DA542D1C7DC5E40075B06F /* SignIn */,
 				22DA54291C7DC5C00075B06F /* Identity */,
 				22DA54151C7DC4C40075B06F /* AWSConfiguration.h */,
-				22DA54161C7DC4C40075B06F /* AWSMobileClient.h */,
-				22DA54171C7DC4C40075B06F /* AWSMobileClient.m */,
+				22F7042D1CC50EC50050429B /* AWSMobileClient.h */,
+				22F7042E1CC50EC50050429B /* AWSMobileClient.m */,
 			);
 			name = AWS;
 			sourceTree = "<group>";
@@ -2351,6 +2321,15 @@
 			name = "Google Analitycs";
 			sourceTree = "<group>";
 		};
+		22F704271CC50C5D0050429B /* Push */ = {
+			isa = PBXGroup;
+			children = (
+				22F704281CC50C690050429B /* AWSPushManager.h */,
+				22F704291CC50C690050429B /* AWSPushManager.m */,
+			);
+			name = Push;
+			sourceTree = "<group>";
+		};
 		22F7278B187708C500CB57D4 /* AAShareBubbles */ = {
 			isa = PBXGroup;
 			children = (
@@ -2382,6 +2361,16 @@
 				CD95CE351860FB7700879213 /* KIImagePager */,
 			);
 			name = Third;
+			sourceTree = "<group>";
+		};
+		22FE87891CA17F4F00361490 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				22FE878A1CA17F5D00361490 /* SignIn.storyboard */,
+				22FE878B1CA17F5D00361490 /* SignInViewController.h */,
+				22FE878C1CA17F5D00361490 /* SignInViewController.m */,
+			);
+			name = SignIn;
 			sourceTree = "<group>";
 		};
 		CD429E2518C3A19C0015ED37 /* CRMotionView */ = {
@@ -2656,6 +2645,7 @@
 				22AAC68119893BEB0035BBB4 /* TimetableCell.png in Resources */,
 				22B6D6E01987C13E005D264F /* Chemin.png in Resources */,
 				22B0C73C1C917FF800E7A3F5 /* 640x408default.jpg in Resources */,
+				22FE878D1CA17F5D00361490 /* SignIn.storyboard in Resources */,
 				2297E5CD18CF733600072806 /* R_CN_1.png in Resources */,
 				2230D881181FE1150060C568 /* dotted-pattern.png in Resources */,
 				22CA949A1A79127D007ABFCF /* BK_game.png in Resources */,
@@ -2707,6 +2697,7 @@
 				2294A97D18C4E42000A9F51C /* CMVBackgroundSwipeCell.m in Sources */,
 				22A8AE3519CC7BF30070A65C /* ECSlidingViewController.m in Sources */,
 				22B0C74E1C932E8A00E7A3F5 /* News.m in Sources */,
+				22F7042A1CC50C690050429B /* AWSPushManager.m in Sources */,
 				22CF4469181A9AD70062FC38 /* main.m in Sources */,
 				2203C51119D5985C003739B4 /* MZFormSheetBackgroundWindow.m in Sources */,
 				22B0C7421C92FE0200E7A3F5 /* Tournament.m in Sources */,
@@ -2781,6 +2772,7 @@
 				22D3AF3F18AA3F3F0023BAE2 /* CMVSplitTournaments.m in Sources */,
 				22D00DF518EBFC6C0047DD31 /* FBShimmeringView.m in Sources */,
 				22D9DBE119DC31DC005AB952 /* CMVPokerCellBackgroundGrey.m in Sources */,
+				22F7042F1CC50EC50050429B /* AWSMobileClient.m in Sources */,
 				22FBACFB1C98464A00C63586 /* Services.m in Sources */,
 				22BADAA6188555F8000318E3 /* CMVTournamentsCell.m in Sources */,
 				22FBAD041C98565400C63586 /* VPC.m in Sources */,
@@ -2822,7 +2814,6 @@
 				2297E5B918CDFA0100072806 /* CMVGame.m in Sources */,
 				22A8AE4A19CC821F0070A65C /* MEFoldAnimationController.m in Sources */,
 				22679456191CD9B500D0A447 /* CMVAlertForPush.m in Sources */,
-				221FAF4218C5EB1200B77952 /* MyLogInViewController.m in Sources */,
 				CD95CE3C1860FB9A00879213 /* KIImagePager.m in Sources */,
 				2297E5B618CDE35400072806 /* CMVLike.m in Sources */,
 				22BADAA01885538E000318E3 /* CMVTournamentsViewZoomController.m in Sources */,
@@ -2864,8 +2855,8 @@
 				22A4352C19A204C000CD64E6 /* CMVCheckWeekDay.m in Sources */,
 				2277C3C819E684C700B57F25 /* CMVVPCTableBGCell.m in Sources */,
 				2292A1E4190E9B0E00BD2792 /* FBShimmeringLayer.m in Sources */,
+				22FE878E1CA17F5D00361490 /* SignInViewController.m in Sources */,
 				229C85C819E2A96C009A58AA /* CMVLogInFieldsBG.m in Sources */,
-				22DA54181C7DC4C40075B06F /* AWSMobileClient.m in Sources */,
 				22DF1D7E18F6DD6900E533FE /* RPSlidingMenuCell.m in Sources */,
 				2297E5C218CE03FA00072806 /* CMVLocker.m in Sources */,
 				2297E5AD18CDCA1000072806 /* CMVMenuBack.m in Sources */,
@@ -2884,7 +2875,6 @@
 				2297E5C518CF23DB00072806 /* CMVSharedPropertyButton.m in Sources */,
 				22DA542C1C7DC5CC0075B06F /* AWSIdentityManager.m in Sources */,
 				22DAAD33189FE62F00435B50 /* CMVREstaurantViewController.m in Sources */,
-				221FAF4318C5EB1200B77952 /* MySignUpViewController.m in Sources */,
 				22CA949D1A79129A007ABFCF /* CMVAllEventsViewController.m in Sources */,
 				22A8AE3319CC7BF30070A65C /* ECSlidingInteractiveTransition.m in Sources */,
 				229DAC951827AA4E0053EB2E /* TTUITableViewZoomController.m in Sources */,

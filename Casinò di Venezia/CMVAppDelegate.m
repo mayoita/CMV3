@@ -11,7 +11,7 @@
 #import "UINavigationController+MHDismissModalView.h"
 #import "CMVMapViewController.h"
 #import "CMVLocalize.h"
-#import <Parse/Parse.h>
+
 #import "CMVEventKitController.h"
 #import "MZModalViewController.h"
 #import "MZFormSheetController.h"
@@ -21,9 +21,6 @@
 #import "GAI.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <ParseFacebookUtilsV4/PFFacebookUtils.h>
-#import <ParseCrashReporting/ParseCrashReporting.h>
-#import <ParseTwitterUtils/ParseTwitterUtils.h>
 #import "ECSlidingViewController.h"
 
 #define PARSE_CLASS_NAME @"Events"
@@ -34,6 +31,11 @@
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import <AWSS3/AWSS3.h>
 #import "Radius.h"
+#import "AWSIdentityManager.h"
+#import <AWSCognito/AWSCognito.h>
+#import "AWSPushManager.h"
+#import "AWSConfiguration.h"
+
 
 //TODO: Set 120 for publishing
 //TODO: Voice speed for iOS 8
@@ -41,28 +43,31 @@
 static int const kGaDispatchPeriod = 20;
 static NSString *const kGaPropertyId = @"UA-42477250-3";
 
-@interface CMVAppDelegate ()
+@interface CMVAppDelegate ()<AWSPushManagerDelegate, AWSPushTopicDelegate>
 
 @property (nonatomic)  CLLocationCoordinate2D region;
 @property(nonatomic)float radius;
 @property(nonatomic)float veniceRadius;
 @property (strong, nonatomic)NSString *myObjectLocation;
-@property(strong,nonatomic)PFInstallation *currentInstallation;
+
 @property(strong,nonatomic)CLRegion *veniceRegion;
 @property(strong,nonatomic)CLRegion *veniceRegion6;
 
 
 @end
-
+AWSIdentityManager *identityManager;
+AWSCognito *syncClient;
+AWSCognitoDataset *dataset;
 @implementation CMVAppDelegate
 @synthesize locationManager = _locationManager;
 @synthesize veniceRadius=_veniceRadius;
-@synthesize currentInstallation=_currentInstallation;
+
 
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.showAD = true;
     NSArray *windows = [[UIApplication sharedApplication] windows];
     for(UIWindow *window in windows) {
         NSLog(@"window: %@",window.description);
@@ -73,11 +78,21 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
     }
     [[AWSMobileClient sharedInstance] didFinishLaunching:application
                                              withOptions:launchOptions];
+    identityManager = [AWSIdentityManager sharedInstance];
+    syncClient = [AWSCognito defaultCognito];
+    dataset = [syncClient openOrCreateDataset:@"myDataset"];
+    
+    //Push notification
+    AWSPushManager *pushManager = [AWSPushManager defaultPushManager];
+    pushManager.delegate = self;
+    [pushManager registerForPushNotifications];
+    [pushManager registerTopicARNs:@[AWS_SNS_ALL_DEVICE_TOPIC_ARN, @"arn:aws:sns:us-east-1:286534156638:dynamodb"]];
+
     // Override point for customization after application launch.
     [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     //Helpshift
-    [self parseSetUp:application withLunchOption:launchOptions];
+
     [Helpshift installForApiKey:@"75b10c6c105e8bebefc95729c56e33ae" domainName:@"casinovenezia.helpshift.com" appID:@"casinovenezia_platform_20131218091253899-f3f796e2d4b9e99"];
     
     
@@ -102,8 +117,6 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
     
     _veniceRadius = MAX_RADIUS;
     
-    // Use Reachability to monitor connectivity
-    [self monitorReachability];
     
     
     // Handle launching from a notification
@@ -149,74 +162,7 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
 
     return YES;
 }
--(void)parseSetUp :(UIApplication *)application withLunchOption:(NSDictionary *)launchOptions{
-    // Enable storing and querying data from Local Datastore. Remove this line if you don't want to
-    // use Local Datastore features or want to use cachePolicy.
-    // [Parse enableLocalDatastore];
-    
-    // ****************************************************************************
-    // Uncomment this line if you want to enable Crash Reporting
-    [ParseCrashReporting enable];
-    //
-    // Uncomment and fill in with your Parse credentials:
-    [Parse setApplicationId:@"yO3MBzW9liNCaiAfXWGb3NtZJ3VhXyy4Zh8rR5ck"
-                  clientKey:@"KImYuYCrJ9j3IbDI3W2KtDXCXwmfqsRDCn5Em6A9"];
-    //
-    // If you are using Facebook, uncomment and add your FacebookAppID to your bundle's plist as
-    // described here: https://developers.facebook.com/docs/getting-started/facebook-sdk-for-ios/
-    [PFFacebookUtils initializeFacebookWithApplicationLaunchOptions:launchOptions];
-    //[PFFacebookUtils initializeFacebook];
-    // ****************************************************************************
-            [PFTwitterUtils initializeWithConsumerKey:@"iG8JhxkUYQS0liIzwtYQ" consumerSecret:@"DCT2PL3MbHCN0RV9cx5K7iTlSdKfimaEUB8cOBELOTc"];
-    //[PFUser enableAutomaticUser];
-    _currentInstallation= [PFInstallation currentInstallation];
-    // Associate the device with a user
-    if ([PFUser currentUser]) {
-        _currentInstallation[@"user"] = [PFUser currentUser];
-        [_currentInstallation saveEventually];
-    }
-    
-    PFACL *defaultACL = [PFACL ACL];
-    
-    // If you would like all objects to be private by default, remove this line.
-    [defaultACL setPublicReadAccess:YES];
-    
-    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-    
-    if (application.applicationIconBadgeNumber != 0) {
-        application.applicationIconBadgeNumber = 0;
-        [_currentInstallation saveEventually];
-    }
-    
-    if (application.applicationState != UIApplicationStateBackground) {
-        // Track an app open here if we launch with a push, unless
-        // "content_available" was used to trigger a background push (introduced in iOS 7).
-        // In that case, we skip tracking here to avoid double counting the app-open.
-        BOOL preBackgroundPush = ![application respondsToSelector:@selector(backgroundRefreshStatus)];
-        BOOL oldPushHandlerOnly = ![self respondsToSelector:@selector(application:didReceiveRemoteNotification:fetchCompletionHandler:)];
-        BOOL noPushPayload = ![launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
-        if (preBackgroundPush || oldPushHandlerOnly || noPushPayload) {
-            [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
-        }
-    }
-    
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
-    if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType userNotificationTypes = (UIUserNotificationTypeAlert |
-                                                        UIUserNotificationTypeBadge |
-                                                        UIUserNotificationTypeSound);
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:userNotificationTypes
-                                                                                 categories:nil];
-        [application registerUserNotificationSettings:settings];
-        [application registerForRemoteNotifications];
-    } else
-#endif
-    {
-        [application registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                         UIRemoteNotificationTypeAlert |
-                                                         UIRemoteNotificationTypeSound)];
-    }
-}
+
 -(void)loadStorage {
     //DynamoDB
     AWSDynamoDBObjectMapper *dynamoDBObjectMapper = [AWSDynamoDBObjectMapper defaultDynamoDBObjectMapper];
@@ -257,7 +203,7 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
         BOOL oldPushHandlerOnly = ![self respondsToSelector:@selector(application:didReceiveRemoteNotification:fetchCompletionHandler:)];
         BOOL noPushPayload = ![launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
         if (preBackgroundPush || oldPushHandlerOnly || noPushPayload) {
-            [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+            //[PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
         }
     }
 }
@@ -513,9 +459,16 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
 }
 
 -(void)saveInstallationLocation {
-    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:_locationManager.location.coordinate.latitude longitude:_locationManager.location.coordinate.longitude];
-    _currentInstallation[@"Location"] = geoPoint;
-    [_currentInstallation saveEventually];
+
+    if (identityManager.identityId) {
+        [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.latitude] stringValue] forKey:@"latitude"];
+        [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.longitude] stringValue] forKey:@"longitude"];
+        
+        [[dataset synchronize] continueWithBlock:^id(AWSTask *task) {
+            // Your handler code here
+            return nil;
+        }];
+    }
    
 }
 
@@ -582,9 +535,11 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
         [userDefaults synchronize];
     }
     
-    if (_currentInstallation[@"LeftVenice"]) {
-            _currentInstallation[@"LeftVenice"] = @NO;
-    }
+    [dataset setString:@"false" forKey:@"LeftVenice"];
+    [[dataset synchronize] continueWithBlock:^id(AWSTask *task) {
+        // Your handler code here
+        return nil;
+    }];
     [self isInVenice];
     
 }
@@ -592,24 +547,36 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
 
 
 - (void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region {
-   
+
         [self isInVenice];
         
-    
 }
 
 -(void)isInVenice {
-    PFGeoPoint *geoPoint = [PFGeoPoint geoPointWithLatitude:_locationManager.location.coordinate.latitude longitude:_locationManager.location.coordinate.longitude];
-    _currentInstallation[@"Location"] = geoPoint;
-    [_currentInstallation addUniqueObject:@"IsInVenice" forKey:@"channels"];
-    [_currentInstallation saveEventually];
+
+    [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.latitude] stringValue] forKey:@"latitude"];
+    [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.longitude] stringValue] forKey:@"longitude"];
+    [dataset setString:@"IsInVenice" forKey:@"channels"];
+   
+    [[dataset synchronize] continueWithBlock:^id(AWSTask *task) {
+        // Your handler code here
+        return nil;
+    }];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
     if ([region.identifier isEqualToString: @"Venice"]) {
-        _currentInstallation[@"LeftVenice"] = @YES;
-        [_currentInstallation removeObject:@"IsInVenice" forKey:@"channels"];
-        [_currentInstallation saveEventually];
+      //  _currentInstallation[@"LeftVenice"] = @YES;
+      //  [_currentInstallation removeObject:@"IsInVenice" forKey:@"channels"];
+      //  [_currentInstallation saveEventually];
+        [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.latitude] stringValue] forKey:@"latitude"];
+        [dataset setString:[[NSNumber numberWithDouble:_locationManager.location.coordinate.longitude] stringValue] forKey:@"longitude"];
+        [dataset setString:@"" forKey:@"channels"];
+        [dataset setString:@"true" forKey:@"LeftVenice"];
+        [[dataset synchronize] continueWithBlock:^id(AWSTask *task) {
+            // Your handler code here
+            return nil;
+        }];
     }
 }
 
@@ -662,13 +629,15 @@ static NSString *const kGaPropertyId = @"UA-42477250-3";
 
 - (void)application:(UIApplication *)application
 didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
-    // Store the deviceToken in the current installation and save it to Parse.
+    
+    [[AWSMobileClient sharedInstance] application:application
+ didRegisterForRemoteNotificationsWithDeviceToken:newDeviceToken];// Store the deviceToken in the current installation and save it to Parse.
   
-    [_currentInstallation setDeviceTokenFromData:newDeviceToken];
-    [_currentInstallation addUniqueObject:@"Events" forKey:@"channels"];
-    [_currentInstallation addUniqueObject:@"Slots" forKey:@"channels"];
-    [_currentInstallation addUniqueObject:@"Poker" forKey:@"channels"];
-    [_currentInstallation saveEventually];
+ //   [_currentInstallation setDeviceTokenFromData:newDeviceToken];
+ //   [_currentInstallation addUniqueObject:@"Events" forKey:@"channels"];
+  //  [_currentInstallation addUniqueObject:@"Slots" forKey:@"channels"];
+  //  [_currentInstallation addUniqueObject:@"Poker" forKey:@"channels"];
+  //  [_currentInstallation saveEventually];
     
     [[Helpshift sharedInstance] registerDeviceToken:newDeviceToken];
 }
@@ -677,6 +646,8 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
 	if (error.code != 3010) { // 3010 is for the iPhone Simulator
         NSLog(@"Application failed to register for push notifications: %@", error);
 	}
+    [[AWSMobileClient sharedInstance] application:application
+ didFailToRegisterForRemoteNotificationsWithError:error];
 }
 
 
@@ -692,12 +663,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
                                                      withURL:url
                                        withSourceApplication:sourceApplication
                                               withAnnotation:annotation];
-    
-    //with Parse
-//    return [[FBSDKApplicationDelegate sharedInstance] application:application
-//                                                          openURL:url
-//                                                sourceApplication:sourceApplication
-//                                                       annotation:annotation];
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -705,10 +671,10 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
 
-    if (_currentInstallation.badge != 0) {
-        _currentInstallation.badge = 0;
-        [_currentInstallation saveEventually];
-    }
+//    if (_currentInstallation.badge != 0) {
+//        _currentInstallation.badge = 0;
+//        [_currentInstallation saveEventually];
+//    }
     
     [FBSDKAppEvents activateApp];
     [[AWSMobileClient sharedInstance] applicationDidBecomeActive:application];
@@ -730,7 +696,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     //Success
     handler(UIBackgroundFetchResultNewData);
     if (application.applicationState == UIApplicationStateInactive) {
-        [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
+       // [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
     }
 }
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -738,11 +704,9 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
         UIViewController* vc = [[UIViewController alloc]initWithNibName:nil bundle:nil];
         [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:vc];
     }
-    if (application.applicationState == UIApplicationStateInactive) {
-        // The application was just brought from the background to the foreground,
-        // so we consider the app as having been "opened by a push notification."
-        [PFAnalytics trackAppOpenedWithRemoteNotificationPayload:userInfo];
-    }
+
+    [[AWSMobileClient sharedInstance] application:application
+                     didReceiveRemoteNotification:userInfo];
 }
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     NSLog(@"Background fetch started...");
@@ -764,31 +728,88 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)newDeviceToken {
     NSLog(@"Background fetch completed...");
 }
 
+#pragma mark - AWSPushNotificationDelegate
 
-
-
-- (void)monitorReachability {
-    Reachability *hostReach = [Reachability reachabilityWithHostname:@"api.parse.com"];
-    
-    hostReach.reachableBlock = ^(Reachability*reach) {
-        _networkStatus = [reach currentReachabilityStatus];
-        
-        if ([self isParseReachable] && [PFUser currentUser]) {// && self.homeViewController.objects.count == 0) {
-            // Refresh home timeline on network restoration. Takes care of a freshly installed app that failed to load the main timeline under bad network conditions.
-            // In this case, they'd see the empty timeline placeholder and have no way of refreshing the timeline unless they followed someone.
-            //[self.homeViewController loadObjects];
-        }
-    };
-    
-    hostReach.unreachableBlock = ^(Reachability*reach) {
-        _networkStatus = [reach currentReachabilityStatus];
-    };
-    
-    [hostReach startNotifier];
+- (void)pushManagerDidRegister:(AWSPushManager *)pushManager {
+    AWSLogInfo(@"Successfully enabled Push Notification.");
+  
+    AWSPushTopic *topic = [pushManager topicForTopicARN:AWS_SNS_ALL_DEVICE_TOPIC_ARN];
+    [topic subscribe];
 }
 
-- (BOOL)isParseReachable {
-    return self.networkStatus != NotReachable;
+- (void)pushManager:(AWSPushManager *)pushManager
+didFailToRegisterWithError:(NSError *)error {
+    AWSLogError(@"Failed to enable Push Notifications: %@", error);
+    
+    
+    [self showAlertWithTitle:@"Error"
+                     message:@"Failed to enable Push Notifications."];
+}
+
+- (void)pushManager:(AWSPushManager *)pushManager
+didReceivePushNotification:(NSDictionary *)userInfo {
+    AWSLogInfo(@"Received a Push Notification: %@", userInfo);
+    
+    [self showAlertWithTitle:@"Push Notification Received"
+                     message:[userInfo description]];
+}
+
+- (void)pushManagerDidDisable:(AWSPushManager *)pushManager {
+    AWSLogInfo(@"Successfully disabled Push Notifications.");
+ 
+}
+
+- (void)pushManager:(AWSPushManager *)pushManager
+didFailToDisableWithError:(NSError *)error {
+    AWSLogError(@"Failed to disable Push Notifications: %@", error);
+    
+    [self showAlertWithTitle:@"Error"
+                     message:@"Failed to unsubscribe from all of the topics."];
+}
+#pragma mark - AWSPushNotificationTopicDelegate
+
+- (void)topicDidSubscribe:(AWSPushTopic *)topic {
+    AWSLogInfo(@"Successfully subscribed to a topic: %@", topic);
+
+}
+
+- (void)topic:(AWSPushTopic *)topic
+didFailToSubscribeWithError:(NSError *)error {
+    AWSLogError(@"Failed to subscribe to a topic: %@", error);
+    
+    [self showAlertWithTitle:@"Error"
+                     message:[NSString stringWithFormat:@"Failed to subscribe to '%@'.", topic.topicName]];
+}
+
+- (void)topicDidUnsubscribe:(AWSPushTopic *)topic {
+    AWSLogInfo(@"Successfully unsubscribed to a topic: %@", topic);
+
+}
+
+- (void)topic:(AWSPushTopic *)topic
+didFailToUnsubscribeWithError:(NSError *)error {
+    AWSLogError(@"Failed to unsubscribe to a topic: %@", error);
+    
+    [self showAlertWithTitle:@"Error"
+                     message:[NSString stringWithFormat:@"Failed to unsubscribe from '%@'.", topic.topicName]];
+}
+#pragma mark - Utility methods
+
+- (void)showAlertWithTitle:(NSString *)title
+                   message:(NSString *)message {
+    UIAlertController *alertController =
+    [UIAlertController alertControllerWithTitle:title
+                                        message:message
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction =
+    [UIAlertAction actionWithTitle:@"OK"
+                             style:UIAlertActionStyleDefault
+                           handler:nil];
+    [alertController addAction:cancelAction];
+    
+  //  [self presentViewController:alertController
+        //               animated:YES
+        //             completion:nil];
 }
 
 @end

@@ -8,7 +8,6 @@
 
 #import "CMVShowImage.h"
 #import "CMVCloseButton.h"
-//#import <Parse/Parse.h>
 
 @interface CMVShowImage () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;

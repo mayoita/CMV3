@@ -10,7 +10,6 @@
 #import "UIViewController+ECSlidingViewController.h"
 #import "CMVCellVPC.h"
 #import "CMVAppDelegate.h"
-#import <Parse/Parse.h>
 #import "CMVSetUpCurrency.h"
 #import <AWSDynamoDB/AWSDynamoDB.h>
 #import "VPC.h"
@@ -89,12 +88,14 @@ static NSNumberFormatter *sUserVisibleDateFormatter = nil;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+             dispatch_async(dispatch_get_main_queue(), ^{
              VPCPrize *prize = task.result;
              self.euro.text=prize.Prize;
              self.euro.text=[self.checkCurrency setupCurrency:self.euro.text];
              NSString *complete = [NSString stringWithFormat:NSLocalizedString(@"Classifica \"Venice Poker Championship\" conclusa al  %@",nil),
                                    prize.Date];
              self.standings.text=complete;
+             });
          }
          return nil;
      }];

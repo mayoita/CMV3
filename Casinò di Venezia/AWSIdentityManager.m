@@ -91,6 +91,12 @@ typedef void (^AWSIdentityManagerCompletionBlock)(id result, NSError *error);
 - (NSString *)userName {
     return self.currentSignInProvider.userName;
 }
+- (NSString *)userEmail {
+    return self.currentSignInProvider.userEmail;
+}
+- (NSString *)userLocation {
+    return self.currentSignInProvider.userLocation;
+}
 
 - (void)wipeAll {
     self.credentialsProvider.identityProvider.identityProviderManager = self;

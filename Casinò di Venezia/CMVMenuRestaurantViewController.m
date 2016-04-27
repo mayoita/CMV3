@@ -7,7 +7,6 @@
 //
 
 #import "CMVMenuRestaurantViewController.h"
-#import <Parse/Parse.h>
 #import "CMVAppDelegate.h"
 #import "CMVCloseButton.h"
 #import "Menu.h"
@@ -72,80 +71,83 @@ static NSString *RPSlidingCellIdentifier = @"RPSlidingCellIdentifier";
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             Menu *menu = task.result;
-             if (![menu.Chief isEqualToString:@"NULL"]) {
-                 self.chiefName.hidden=NO;
-                 self.chiefName.text=[@"CHEF " stringByAppendingString:menu.Chief];
-             }
-             
-             if (menu.StartDate) {
-                 self.fromTo.hidden=NO;
-                 NSString *from= NSLocalizedString(@"FROM ", @"Menu context (add one space)");
-                 NSString *to= NSLocalizedString(@" TO ", @"Menu context(add one space before and one after");
-                 
-                 NSDateFormatter *dateStartFormat = [[NSDateFormatter alloc] init];
-                 [dateStartFormat setDateFormat:@"d"];
-                 NSString *dateString = [dateStartFormat stringFromDate:menu.StartDate];
-                 
-                 NSDateFormatter *dateEndFormat = [[NSDateFormatter alloc] init];
-                 [dateEndFormat setDateFormat:@"dd MMM yyyy"];
-                 NSString *dateEndString = [dateEndFormat stringFromDate:menu.EndDate].uppercaseString;
-                 
-                 NSString *toEnd=[to stringByAppendingString:dateEndString];
-                 NSString *fromStart=[from stringByAppendingString:dateString];
-                 
-                 NSString *fromto=[fromStart stringByAppendingString:toEnd];
-                 self.fromTo.text=fromto;
-             }
-             
-             if ([menu.ImageChief isEqualToString:@"NULL"]) {
-                 
-                 //aa
-             } else {
-                 AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
-                 AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
-                 
-                 NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:menu.ImageChief ];
-                 NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
-                 downloadRequest.bucket = S3BucketName;
-                 downloadRequest.key = menu.ImageChief ;
-                 
-                 downloadRequest.downloadingFileURL = downloadingFileURL;
-                 if ([UIImage imageWithContentsOfFile:downloadingFilePath] == nil) {
-                     // Download the file.
-                     [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
-                                                                            withBlock:^id(AWSTask *task) {
-                                                                                if (task.error){
-                                                                                    if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
-                                                                                        switch (task.error.code) {
-                                                                                            case AWSS3TransferManagerErrorCancelled:
-                                                                                            case AWSS3TransferManagerErrorPaused:
-                                                                                                break;
-                                                                                                
-                                                                                            default:
-                                                                                                NSLog(@"Error: %@", task.error);
-                                                                                                break;
-                                                                                        }
-                                                                                    } else {
-                                                                                        // Unknown error.
-                                                                                        NSLog(@"Error: %@", task.error);
-                                                                                    }
-                                                                                }
-                                                                                
-                                                                                if (task.result) {
-                                                                                    
-                                                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                       self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
-                                                                                    });
-                                                                                    
-                                                                                }
-                                                                                return nil;
-                                                                            }];
-                 } else {
-                     self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 Menu *menu = task.result;
+                 if (![menu.Chief isEqualToString:@"NULL"]) {
+                     self.chiefName.hidden=NO;
+                     self.chiefName.text=[@"CHEF " stringByAppendingString:menu.Chief];
                  }
                  
-             }
+                 if (menu.StartDate) {
+                     self.fromTo.hidden=NO;
+                     NSString *from= NSLocalizedString(@"FROM ", @"Menu context (add one space)");
+                     NSString *to= NSLocalizedString(@" TO ", @"Menu context(add one space before and one after");
+                     
+                     NSDateFormatter *dateStartFormat = [[NSDateFormatter alloc] init];
+                     [dateStartFormat setDateFormat:@"d"];
+                     NSString *dateString = [dateStartFormat stringFromDate:menu.StartDate];
+                     
+                     NSDateFormatter *dateEndFormat = [[NSDateFormatter alloc] init];
+                     [dateEndFormat setDateFormat:@"dd MMM yyyy"];
+                     NSString *dateEndString = [dateEndFormat stringFromDate:menu.EndDate].uppercaseString;
+                     
+                     NSString *toEnd=[to stringByAppendingString:dateEndString];
+                     NSString *fromStart=[from stringByAppendingString:dateString];
+                     
+                     NSString *fromto=[fromStart stringByAppendingString:toEnd];
+                     self.fromTo.text=fromto;
+                 }
+                 
+                 if ([menu.ImageChief isEqualToString:@"NULL"]) {
+                     
+                     //aa
+                 } else {
+                     AWSS3TransferManager *transferManager = [AWSS3TransferManager defaultS3TransferManager];
+                     AWSS3TransferManagerDownloadRequest *downloadRequest = [AWSS3TransferManagerDownloadRequest new];
+                     
+                     NSString *downloadingFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:menu.ImageChief ];
+                     NSURL *downloadingFileURL = [NSURL fileURLWithPath:downloadingFilePath];
+                     downloadRequest.bucket = S3BucketName;
+                     downloadRequest.key = menu.ImageChief ;
+                     
+                     downloadRequest.downloadingFileURL = downloadingFileURL;
+                     if ([UIImage imageWithContentsOfFile:downloadingFilePath] == nil) {
+                         // Download the file.
+                         [[transferManager download:downloadRequest] continueWithExecutor:[AWSExecutor mainThreadExecutor]
+                                                                                withBlock:^id(AWSTask *task) {
+                                                                                    if (task.error){
+                                                                                        if ([task.error.domain isEqualToString:AWSS3TransferManagerErrorDomain]) {
+                                                                                            switch (task.error.code) {
+                                                                                                case AWSS3TransferManagerErrorCancelled:
+                                                                                                case AWSS3TransferManagerErrorPaused:
+                                                                                                    break;
+                                                                                                    
+                                                                                                default:
+                                                                                                    NSLog(@"Error: %@", task.error);
+                                                                                                    break;
+                                                                                            }
+                                                                                        } else {
+                                                                                            // Unknown error.
+                                                                                            NSLog(@"Error: %@", task.error);
+                                                                                        }
+                                                                                    }
+                                                                                    
+                                                                                    if (task.result) {
+                                                                                        
+                                                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                                                            self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
+                                                                                        });
+                                                                                        
+                                                                                    }
+                                                                                    return nil;
+                                                                                }];
+                     } else {
+                         self.chiefImage.image=[UIImage imageWithContentsOfFile:downloadingFilePath];
+                     }
+                     
+                 }
+             });
+             
          }
          return nil;
      }];
@@ -192,6 +194,7 @@ static NSString *RPSlidingCellIdentifier = @"RPSlidingCellIdentifier";
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+              dispatch_async(dispatch_get_main_queue(), ^{
              Menu *menu = task.result;
              switch (row) {
                  case 0: {
@@ -227,6 +230,7 @@ static NSString *RPSlidingCellIdentifier = @"RPSlidingCellIdentifier";
                      break;
              }
              [slidingMenuCell.menuTableView reloadData];
+                  });
          }
          return nil;
      }];

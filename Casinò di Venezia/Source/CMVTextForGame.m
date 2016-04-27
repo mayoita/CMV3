@@ -1213,7 +1213,7 @@
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
+             dispatch_async(dispatch_get_main_queue(), ^{
              Jackpot *item = task.result;
              switch ([CMVLocalize myDeviceLocaleIs]) {
                  case IT :
@@ -1246,6 +1246,7 @@
              [attMyString setAttributes:firstAttributes range:NSMakeRange(0, _stringLength)];
              self.descriptionView.attributedText=attMyString;
              self.textToBeRead=[attMyString string];
+             });
          }
          return nil;
      }];

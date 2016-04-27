@@ -25,5 +25,7 @@
 #define AWS_USER_FILE_MANAGER_S3_BUCKET_NAME @"cmv-userfiles-mobilehub-1695406899"
 // USER AGENT
 #define AWS_MOBILEHUB_USER_AGENT @"MobileHub 0f9150b3-d40c-45ba-8449-17818938352b aws-my-sample-app-ios-objc-v0.6"
-
+// PUSH
+#define AWS_SNS_PLATFORM_APPLICATION_ARN @"arn:aws:sns:us-east-1:286534156638:app/APNS/cmv_MOBILEHUB_1695406899"
+#define AWS_SNS_ALL_DEVICE_TOPIC_ARN @"arn:aws:sns:us-east-1:286534156638:cmv_alldevices_MOBILEHUB_1695406899"
 #define S3BucketName @"cmv-events"

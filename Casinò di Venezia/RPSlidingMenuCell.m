@@ -23,7 +23,7 @@
  ***********************************************************************************/
 
 #import "RPSlidingMenuCell.h"
-#import <Parse/Parse.h>
+
 
 
 #define TEXT_TAG 1

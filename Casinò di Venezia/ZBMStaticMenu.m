@@ -9,16 +9,15 @@
 #import "ZBMStaticMenu.h"
 #import "UIViewController+ECSlidingViewController.h"
 
-#import <Parse/Parse.h>
 #import "CMVSharedPropertyButton.h"
 //#import "GAIDictionaryBuilder.h"
 #import "CMVPermissionForVPCStandingsViewController.h"
 #import "MZFormSheetController.h"
-
+#import "AWSIdentityManager.h"
 
 @interface ZBMStaticMenu ()
 @end
-
+AWSIdentityManager *identityManager;
 @implementation ZBMStaticMenu
 #define SECTION_PATIENT   0
 #define SECTION_MAIN  1
@@ -37,6 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    identityManager = [AWSIdentityManager sharedInstance];
 	[self checkLogIn];
 
         self.home.font=GOTHAM_XLight(18);
@@ -78,7 +78,7 @@
 
 }
 -(void)checkLogIn {
-    if ([PFUser currentUser]) {
+    if (identityManager.userName) {
         self.logIn.text=NSLocalizedString(@"Log Out", nil);
     } else {
         self.logIn.text=NSLocalizedString(@"Log In", nil);
@@ -106,7 +106,7 @@
             
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://itunes.apple.com/it/artist/casino-di-venezia-meeting/id637648046"]];
         }else if ([identifier isEqual: @"VPC"]) {
-            if (![PFUser currentUser]) {
+            if (!identityManager.userName) {
                 //UIStoryboard    *st = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
                 UIStoryboard    *st;
                 if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) { // is iPad

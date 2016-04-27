@@ -7,17 +7,19 @@
 //
 
 #import "CMVPushNews.h"
-#import <Parse/Parse.h>
 #import "UIViewController+ECSlidingViewController.h"
-
-
+#import "AWSIdentityManager.h"
+#import <AWSCognito/AWSCognito.h>
 @interface CMVPushNews ()
 @property (weak, nonatomic) IBOutlet UILabel *mySubLabel;
-@property (strong, nonatomic)PFInstallation *myInstallation;
+
 @end
+AWSIdentityManager *identityManager;
+AWSCognitoDataset *dataset;
+AWSCognito *syncClient;
 
 @implementation CMVPushNews
-@synthesize myInstallation;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,6 +31,7 @@
 
 - (void)viewDidLoad
 {
+    identityManager = [AWSIdentityManager sharedInstance];
     [super viewDidLoad];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"eventsNews"]) {
         [self.events setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"eventsNews"] boolValue] ];
@@ -39,8 +42,6 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"pokerNews"]) {
     [self.poker setOn:[[[NSUserDefaults standardUserDefaults] objectForKey:@"pokerNews"] boolValue]];
     }
-    
-    myInstallation = [PFInstallation currentInstallation];
     
 }
 
@@ -71,15 +72,15 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:YES forKey:@"eventsNews"];
         [userDefaults synchronize];
-        [myInstallation addUniqueObject:@"Events" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"ON" forKey:@"Events"];
+        [dataset synchronize];
     } else {
         [self shareButtonPress:@"NoEvents"];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:NO forKey:@"eventsNews"];
         [userDefaults synchronize];
-        [myInstallation removeObject:@"Events" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"OFF" forKey:@"Events"];
+        [dataset synchronize];
     }
    
 }
@@ -90,16 +91,18 @@
         [userDefaults setBool:YES forKey:@"slotNews"];
         [userDefaults synchronize];
         NSLog(@"Bool: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"slotNews"]);
-        [myInstallation addUniqueObject:@"Slots" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"ON" forKey:@"Slots"];
+        [dataset synchronize];
+
     } else {
         [self shareButtonPress:@"NoSlots"];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:NO forKey:@"slotNews"];
         [userDefaults synchronize];
         NSLog(@"Bool: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"slotNews"]);
-        [myInstallation removeObject:@"Slots" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"OFF" forKey:@"Slots"];
+        [dataset synchronize];
+
     }
 }
 - (IBAction)poker:(id)sender {
@@ -108,15 +111,15 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:YES forKey:@"pokerNews"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [myInstallation addUniqueObject:@"Poker" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"ON" forKey:@"Poker"];
+        [dataset synchronize];
     } else {
         [self shareButtonPress:@"NoPoker"];
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         [userDefaults setBool:NO forKey:@"pokerNews"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        [myInstallation removeObject:@"Poker" forKey:@"channels"];
-        [myInstallation saveEventually];
+        [dataset setString:@"OFF" forKey:@"Poker"];
+        [dataset synchronize];
     }
 }
 

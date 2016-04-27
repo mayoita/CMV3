@@ -7,7 +7,6 @@
 //
 
 #import "CMVServices.h"
-#import <Parse/Parse.h>
 #import "UIViewController+ECSlidingViewController.h"
 #import "CMVAppDelegate.h"
 #import "CMVBusTime.h"
@@ -146,7 +145,7 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
+             dispatch_async(dispatch_get_main_queue(), ^{
              Festivity *item = task.result;
              storageFestivity = item.festivity;
              for (id object in storageFestivity) {
@@ -158,6 +157,7 @@ Festivity *storageFestivity;
              
              _times=nil;
              [self.tableView reloadData];
+             });
          }
          return nil;
      }];

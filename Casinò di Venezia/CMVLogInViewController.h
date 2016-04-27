@@ -7,10 +7,9 @@
 //
 
 #import "CMVSwipeViewController.h"
-#import <Parse/Parse.h>
-#import <ParseUI/ParseUI.h>
 
-@interface CMVLogInViewController : CMVSwipeViewController <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate, NSURLConnectionDelegate>
+
+@interface CMVLogInViewController : CMVSwipeViewController <NSURLConnectionDelegate>
 @property (nonatomic, strong) IBOutlet UILabel *welcomeLabel;
 @property (nonatomic, strong) IBOutlet UILabel *birthdayLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *pictureImageView;

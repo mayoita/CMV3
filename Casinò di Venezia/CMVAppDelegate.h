@@ -26,6 +26,7 @@
 @property (nonatomic)BOOL appOpen;
 @property (strong, nonatomic) NSMutableArray *storage;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic)BOOL showAD;
 
 - (BOOL)isParseReachable;
 -(void)proximityMonitoring:(NSUserDefaults *)aDefaults;

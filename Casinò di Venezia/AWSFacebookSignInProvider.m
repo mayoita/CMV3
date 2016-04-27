@@ -31,6 +31,8 @@ static NSTimeInterval const AWSFacebookSignInProviderTokenRefreshBuffer = 10 * 6
 @property (strong, nonatomic) FBSDKLoginManager *facebookLogin;
 
 @property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSString *userEmail;
+@property (strong, nonatomic) NSString *userLocation;
 @property (strong, nonatomic) NSURL *imageURL;
 
 @end
@@ -128,6 +130,23 @@ static NSTimeInterval const AWSFacebookSignInProviderTokenRefreshBuffer = 10 * 6
                                                  NSDictionary *result,
                                                  NSError *queryError) {
         self.userName = result[@"name"];
+    }];
+    
+    FBSDKGraphRequest *requestForEmail = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me"
+                                                                          parameters:@{@"fields" : @"email"}];
+    [requestForEmail startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
+                                                 NSDictionary *result,
+                                                 NSError *queryError) {
+       
+        self.userEmail = result[@"email"];
+    }];
+    FBSDKGraphRequest *requestForLocation = [[FBSDKGraphRequest alloc] initWithGraphPath:@"me"
+                                                                           parameters:@{@"fields" : @"location"}];
+    [requestForLocation startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
+                                                  NSDictionary *result,
+                                                  NSError *queryError) {
+        
+        self.userLocation = result[@"location"][@"name"];
     }];
 }
 

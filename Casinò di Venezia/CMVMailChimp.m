@@ -7,11 +7,10 @@
 //
 
 #import "CMVMailChimp.h"
-#import <Parse/Parse.h>
 #import "CMVAppDelegate.h"
 #import "UIViewController+ECSlidingViewController.h"
-
-
+#import "AWSIdentityManager.h"
+#import <AWSCognito/AWSCognito.h>
 @interface CMVMailChimp ()
 
 @property (weak, nonatomic) IBOutlet UISwitch *newsletter;
@@ -23,7 +22,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *newsletterLabel;
 
 @end
-
+AWSIdentityManager *identityManager;
 @implementation CMVMailChimp
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -39,19 +38,22 @@
 {
     [super viewDidLoad];
     _myEmail.delegate=self;
-    
-    if ([[PFUser currentUser] objectForKey:@"profile"][@"name"]) {
-      
-        self.myName.text=[[[PFUser currentUser] objectForKey:@"profile"][@"name"] componentsSeparatedByString:@" "][0];
-        self.myLastName.text=[[[PFUser currentUser] objectForKey:@"profile"][@"name"] componentsSeparatedByString:@" "][1];
-    }
-    if ([[PFUser currentUser] objectForKey:@"profile"][@"email"]) {
-        self.myEmail.text=[[PFUser currentUser] objectForKey:@"profile"][@"email"];
-        if ([self.myEmail.text  isEqual: @""]) {
-
-        }
+    identityManager = [AWSIdentityManager sharedInstance];
+    if (identityManager.userName) {
+        AWSCognito *syncClient = [AWSCognito defaultCognito];
         
+        AWSCognitoDataset *dataset = [syncClient openOrCreateDataset:@"myDataset"];
+        self.myName.text=[identityManager.userName componentsSeparatedByString:@" "][0];
+        self.myLastName.text=[identityManager.userName componentsSeparatedByString:@" "][1];
+        if ([dataset stringForKey:@"email"]) {
+            self.myEmail.text =[dataset stringForKey:@"email"];
+        } else {
+            self.myEmail.text = identityManager.userEmail;
+            [dataset setString:identityManager.userEmail forKey:@"email"];
+        }
+
     }
+   
     
     [self.myName resignFirstResponder];
     

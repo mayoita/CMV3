@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "CMVSwipeTableViewCell.h"
-#import <Parse/Parse.h>
 #import "CMVGameSplitViewController.h"
 #import "CMVCloseButton.h"
 #import "CMVShare.h"

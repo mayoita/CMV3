@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MRC-3S-e6z">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MRC-3S-e6z">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -894,15 +894,6 @@
                                                 <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <size key="shadowOffset" width="0.0" height="1"/>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rrt-yg-2O4">
-                                                <rect key="frame" x="10" y="265" width="580" height="255"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="255" id="LZR-0G-D3W"/>
-                                                </constraints>
-                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            </textView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wn3-NW-miJ">
                                                 <rect key="frame" x="8" y="8" width="585" height="215"/>
                                                 <subviews>
@@ -924,6 +915,15 @@
                                                     <constraint firstAttribute="bottom" secondItem="VOp-6m-KnX" secondAttribute="bottom" constant="2" id="hyJ-iO-E0Z"/>
                                                 </constraints>
                                             </view>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" misplaced="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rrt-yg-2O4">
+                                                <rect key="frame" x="10" y="262" width="580" height="255"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="255" id="LZR-0G-D3W"/>
+                                                </constraints>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            </textView>
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="Wn3-NW-miJ" firstAttribute="leading" secondItem="Aiw-tV-QKX" secondAttribute="leading" constant="8" id="1bI-O6-Fpm"/>
@@ -982,6 +982,16 @@
                                     <action selector="done:" destination="vmY-pC-irj" eventType="touchUpInside" id="9yS-cn-11J"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AH1-HG-r8H">
+                                <rect key="frame" x="6" y="46" width="132" height="22"/>
+                                <color key="backgroundColor" red="0.058823529411764705" green="0.792156862745098" blue="0.19215686274509805" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Book now!">
+                                    <color key="titleColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </state>
+                                <connections>
+                                    <action selector="booking:" destination="vmY-pC-irj" eventType="touchUpInside" id="DQD-56-hau"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="CkO-bG-AY5" firstAttribute="top" secondItem="z3e-A6-hbM" secondAttribute="bottom" id="1jU-ZL-E8b"/>
@@ -1010,6 +1020,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="book" destination="AH1-HG-r8H" id="c8a-Ug-3jA"/>
                         <outlet property="closeButton" destination="ESW-2y-Brx" id="Sg8-ek-gvG"/>
                         <outlet property="constraintheight" destination="a9v-nx-nLj" id="S0M-Aw-IK6"/>
                         <outlet property="eventDate" destination="a3B-0B-ZEq" id="r9r-Mb-Ler"/>
@@ -1022,7 +1033,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oVa-Ie-XNs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3118" y="180"/>
+            <point key="canvasLocation" x="3047" y="117"/>
         </scene>
         <!--Data Source-->
         <scene sceneID="X3E-Sq-uov">

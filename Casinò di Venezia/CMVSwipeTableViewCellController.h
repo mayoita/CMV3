@@ -13,7 +13,6 @@
 #import "CMVEventViewController.h"
 #import "TTUITableViewZoomController.h"
 #import "CMVMainTabbarController.h"
-#import <Parse/Parse.h>
 #import "CMVEventKitController.h"
 #import "TTScrollSlidingPagesController.h"
 

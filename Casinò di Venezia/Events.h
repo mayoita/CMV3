@@ -44,6 +44,8 @@
 @property (nonatomic, strong) NSString *NameZH;
 @property (nonatomic, strong) NSString *office;
 @property (nonatomic, strong) NSString *URL;
+@property (nonatomic, strong) NSString *URLBook;
+@property (nonatomic, strong) NSString *Book;
 @property (nonatomic, strong)UITableView *theTableView;
 @property (nonatomic, strong) KIImagePager *imK;
 

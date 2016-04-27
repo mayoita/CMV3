@@ -7,7 +7,6 @@
 //
 
 #import "CMVHomeViewController.h"
-#import <Parse/Parse.h>
 #import "DVOMarqueeView.h"
 #import "CMVSetUpCurrency.h"
 #import "CMVAppDelegate.h"
@@ -92,10 +91,12 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-
-             Jackpot *item = task.result;
-             self.jackpot.text=item.jackpot;
-             self.jackpot.text=[self.checkCurrency setupCurrency:self.jackpot.text];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 Jackpot *item = task.result;
+                 self.jackpot.text=item.jackpot;
+                 self.jackpot.text=[self.checkCurrency setupCurrency:self.jackpot.text];
+             });
+            
              
          }
          return nil;
@@ -151,9 +152,11 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 Festivity *item = task.result;
+                 storageFestivity = item.festivity;
+             });
              
-             Festivity *item = task.result;
-             storageFestivity = item.festivity;
          }
          return nil;
      }];
@@ -227,44 +230,46 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 News *item = task.result;
+                 switch ([CMVLocalize myDeviceLocaleIs]) {
+                     case IT :
+                         self.labelMarqueeText.text=item.NewsIT;
+                         break;
+                     case DE :
+                         self.labelMarqueeText.text=item.NewsDE;
+                         break;
+                     case FR :
+                         self.labelMarqueeText.text=item.NewsFR;
+                         break;
+                     case ES :
+                         self.labelMarqueeText.text=item.NewsES;
+                         break;
+                     case RU  :
+                         self.labelMarqueeText.text=item.NewsRU;
+                         break;
+                     case ZH:
+                         self.labelMarqueeText.text=item.NewsZH;
+                         break;
+                         
+                     default:
+                         self.labelMarqueeText.text=item.News;
+                         break;
+                 }
+                 
+                 self.labelMarqueeText.textColor=[UIColor whiteColor];
+                 [ self.labelMarqueeText sizeToFit];
+                 
+                 labelMarquee = [[DVOMarqueeView alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
+                 labelMarquee.viewToScroll =  self.labelMarqueeText;
+                 CMVGradientForNews *gradient=[[CMVGradientForNews alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
+                 self.labelMarquee=labelMarquee;
+                 [self.view addSubview:labelMarquee];
+                 [self.view addSubview:gradient];
+                 
+                 [labelMarquee beginScrolling];
+             });
              
-             News *item = task.result;
-             switch ([CMVLocalize myDeviceLocaleIs]) {
-                 case IT :
-                     self.labelMarqueeText.text=item.NewsIT;
-                     break;
-                 case DE :
-                     self.labelMarqueeText.text=item.NewsDE;
-                     break;
-                 case FR :
-                     self.labelMarqueeText.text=item.NewsFR;
-                     break;
-                 case ES :
-                     self.labelMarqueeText.text=item.NewsES;
-                     break;
-                 case RU  :
-                     self.labelMarqueeText.text=item.NewsRU;
-                     break;
-                 case ZH:
-                     self.labelMarqueeText.text=item.NewsZH;
-                     break;
-                     
-                 default:
-                     self.labelMarqueeText.text=item.News;
-                     break;
-             }
-             
-             self.labelMarqueeText.textColor=[UIColor whiteColor];
-             [ self.labelMarqueeText sizeToFit];
-             
-             labelMarquee = [[DVOMarqueeView alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
-             labelMarquee.viewToScroll =  self.labelMarqueeText;
-             CMVGradientForNews *gradient=[[CMVGradientForNews alloc] initWithFrame:CGRectMake(0, self.tabBarController.tabBar.frame.origin.y -35, CGRectGetWidth(self.view.bounds), 30)];
-             self.labelMarquee=labelMarquee;
-             [self.view addSubview:labelMarquee];
-             [self.view addSubview:gradient];
-             
-             [labelMarquee beginScrolling];
          }
          return nil;
      }];
@@ -284,7 +289,7 @@ Festivity *storageFestivity;
              NSLog(@"The request failed. Exception: [%@]", task.exception);
          }
          if (task.result) {
-             
+              dispatch_async(dispatch_get_main_queue(), ^{
              News *item = task.result;
              switch ([CMVLocalize myDeviceLocaleIs]) {
                  case IT :
@@ -313,6 +318,7 @@ Festivity *storageFestivity;
              
              [self.labelMarqueeText sizeToFit];
              self.labelMarquee.viewToScroll =  self.labelMarqueeText;
+                    });
          }
          return nil;
      }];

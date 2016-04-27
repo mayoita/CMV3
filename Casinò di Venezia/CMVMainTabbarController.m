@@ -12,7 +12,6 @@
 #import "ZBMStaticMenu.h"
 #import "CMVAppDelegate.h"
 #import "CMVConstants.h"
-#import <Parse/Parse.h>
 #import "METransitions.h"
 
 
