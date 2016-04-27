@@ -28,7 +28,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *book;
 
-
 @end
 
 @implementation CMVEventViewController {
