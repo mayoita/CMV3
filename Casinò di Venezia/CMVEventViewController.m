@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
 @property (weak, nonatomic) IBOutlet UIView *whiteView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageHeightConstrait;
-
 @property (weak, nonatomic) IBOutlet UIButton *book;
 
 @end
